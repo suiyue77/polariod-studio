@@ -8,3 +8,5 @@ Independent instant photography editorial website; not affiliated with Polaroid.
 - [Creators](https://polariod-studio.vercel.app/creators/): only owner-approved creators; currently empty.
 - [Gallery](https://polariod-studio.vercel.app/gallery/): clearly labelled original illustrative placeholders until approved photos are available.
 
+- [Agent reader](https://polariod-studio.vercel.app/agent/) — site structure, source links and limits.
+- [Structured catalog](https://polariod-studio.vercel.app/agent/site.json) — same public reader data in JSON.

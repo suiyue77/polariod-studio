@@ -30,3 +30,9 @@ Wish: a small editorial studio for learning, discovery and collecting instant ph
 Alternatively, set CHROME_PATH to an existing Chromium-compatible browser.
 The suite checks eight routes at desktop and mobile widths, image loading,
 page overflow, gallery filtering and the lightbox open/close interaction.
+
+## Project governance
+
+[AGENTS](AGENTS.md) · [Wish](docs/wish/README.md) · [Dev](docs/dev/README.md) · [Design](docs/design/README.md) · [Website Passport](docs/dev/WEBSITE_PASSPORT.md).
+
+Build the source and run \`npm run check:reader\` to check the public reader outputs.

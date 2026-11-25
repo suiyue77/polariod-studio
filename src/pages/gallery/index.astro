@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import {getCollection} from 'astro:content';
+const entries=await getCollection('photos');
+const real=entries.filter(p=>p.data.permission!=='sample');
+const photos=real.length?real:entries.filter(p=>p.data.permission==='sample');
+const categories=[...new Set(photos.map(p=>p.data.category))];
+---
+<Base title="照片墙"><section class="page-intro"><p class="eyebrow">03 / Collect</p><h1>照片墙</h1><p class="lead">{real.length?'一张照片，一段时间。':'真实作品尚未收录。以下原创插画仅用于预览照片墙布局，并非宝丽来实拍。'}</p></section><section class="page-content"><div class="filter-bar" aria-label="按主题筛选"><button type="button" data-filter="all" aria-pressed="true">全部</button>{categories.map(c=><button type="button" data-filter={c} aria-pressed="false">{c}</button>)}</div><div class="collection-grid" id="photo-gallery">{photos.map(p=><figure class="gallery-item" data-category={p.data.category}><a class="print" href={p.data.image} data-pswp-width={p.data.width} data-pswp-height={p.data.height} aria-label={`放大：${p.data.title}`}><img src={p.data.image} alt={p.data.alt} width={p.data.width} height={p.data.height} loading="lazy"/></a><figcaption><div class="gallery-title">{p.data.title}</div><p class="note">{p.data.category} · {p.data.credit}</p></figcaption></figure>)}</div><p class="note mt-6">点击图片可全屏查看；使用键盘方向键或滑动浏览。</p></section></Base>
+<script>
+import PhotoSwipeLightbox from 'photoswipe/lightbox';
+import 'photoswipe/style.css';
+const lightbox=new PhotoSwipeLightbox({gallery:'#photo-gallery',children:'.gallery-item:not([hidden]) > a',showAnimationDuration:0,hideAnimationDuration:0,pswpModule:()=>import('photoswipe')});
+lightbox.init();
+const filters=document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+filters.forEach(btn=>btn.addEventListener('click',()=>{const value=btn.dataset.filter;filters.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));document.querySelectorAll<HTMLElement>('[data-category]').forEach(item=>{item.hidden=value!=='all'&&item.dataset.category!==value;});}));
+</script>
+

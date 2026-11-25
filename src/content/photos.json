@@ -1,0 +1,35 @@
+[
+  {
+    "id": "light",
+    "title": "光的形状",
+    "image": "/studies/light.svg",
+    "alt": "浅橙色圆形与深褐色抽象建筑剪影",
+    "width": 800,
+    "height": 800,
+    "category": "光影",
+    "credit": "原创布局示意，非实拍",
+    "permission": "sample"
+  },
+  {
+    "id": "still",
+    "title": "静物练习",
+    "image": "/studies/still.svg",
+    "alt": "淡绿色桌面上几何花瓶与枝叶",
+    "width": 800,
+    "height": 800,
+    "category": "静物",
+    "credit": "原创布局示意，非实拍",
+    "permission": "sample"
+  },
+  {
+    "id": "blue",
+    "title": "蓝色时刻",
+    "image": "/studies/blue.svg",
+    "alt": "蓝灰色抽象远山与夕阳",
+    "width": 800,
+    "height": 800,
+    "category": "风景",
+    "credit": "原创布局示意，非实拍",
+    "permission": "sample"
+  }
+]

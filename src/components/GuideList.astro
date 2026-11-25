@@ -1,0 +1,6 @@
+---
+import { getCollection } from 'astro:content';
+const guides=(await getCollection('guides')).sort((a,b)=>a.data.number-b.data.number);
+---
+<div class="guide-grid">{guides.map(g=><a class="guide-card" href={`/learn/${g.id}/`}><div class="eyebrow">{String(g.data.number).padStart(2,'0')} / {g.data.category} · {g.data.minutes} 分钟</div><h3>{g.data.title}</h3><p>{g.data.description}</p><span class="text-link">阅读教程 →</span></a>)}</div>
+

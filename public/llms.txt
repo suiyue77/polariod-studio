@@ -2,6 +2,9 @@
 
 Independent instant photography editorial website; not affiliated with Polaroid.
 - [Tutorials](https://polariod-studio.vercel.app/learn/): introductory guides with source links where applicable.
+  - [拍下第一张宝丽来](https://polariod-studio.vercel.app/learn/first-frame/)
+  - [显影时，为什么要避光？](https://polariod-studio.vercel.app/learn/protect-from-light/)
+  - [给每张照片留下一份笔记](https://polariod-studio.vercel.app/learn/photo-notes/)
 - [Creators](https://polariod-studio.vercel.app/creators/): only owner-approved creators; currently empty.
 - [Gallery](https://polariod-studio.vercel.app/gallery/): clearly labelled original illustrative placeholders until approved photos are available.
 

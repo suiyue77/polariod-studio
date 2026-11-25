@@ -10,7 +10,7 @@ npm run dev
 npm run build
 ```
 
-Publish only `dist/` to the existing Vercel project `polariod` under `suiyue77-team`. Verify the target before deploy. No credentials belong here.
+The public GitHub repository is connected to Vercel Hobby. The main branch is the production source, and Vercel builds with the checked-in configuration. Verify the target and build before pushing. No credentials belong here.
 
 ## Content
 
@@ -21,7 +21,7 @@ Publish only `dist/` to the existing Vercel project `polariod` under `suiyue77-t
 
 ## Design & governance
 
-Wish: a small editorial studio for learning, discovery and collecting instant photographs. Design: paper, ink, restrained accent, editorial serif headlines; global CSS is the semantic token owner. Dev: static build and local rendered checks, deploy-only until a private repo/CI is explicitly configured. No paid service or analytics enabled. Public editorial site; never publish unapproved personal photos. Accessibility: semantic navigation, skip link, visible focus, reduced-motion preference, responsive layout. Agent index: /llms.txt.
+Wish: a small editorial studio for learning, discovery and collecting instant photographs. Design: paper, ink, restrained accent, editorial serif headlines; global CSS is the semantic token owner. Dev: static build and local rendered checks, Git-integrated Vercel deployment; no separate hosted CI gate. No paid service or analytics enabled. Public editorial site; never publish unapproved personal photos. Accessibility: semantic navigation, skip link, visible focus, reduced-motion preference, responsive layout. Agent index: /llms.txt.
 
 
 ## Render checks

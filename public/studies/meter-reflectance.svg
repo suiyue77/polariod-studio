@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="326" viewBox="0 0 720 326" role="img" aria-labelledby="t d">
+<title id="t">同一光线下的反射式测光</title><desc id="d">三个表面收到等量入射光，白色反射较多，灰色中等，黑色较少，箭头粗细表示相对强弱而非精确反射率。</desc>
+<rect width="720" height="326" fill="#eee8dc"/>
+<g font-family="system-ui, PingFang SC, sans-serif" fill="#292824" text-anchor="middle">
+<text x="360" y="34" font-size="24" font-weight="600">相同的入射光，不同的反射光</text>
+<text x="210" y="68" font-size="18" fill="#806630">入射 ↓</text><text x="510" y="68" font-size="18" fill="#a0432e">↗ 反射</text>
+<g stroke="#aa8a52" stroke-width="3" fill="none" stroke-linecap="round">
+<path d="M65 91 116 164m-13-6 13 6-2-14M305 91 356 164m-13-6 13 6-2-14M545 91 596 164m-13-6 13 6-2-14"/>
+</g>
+<rect x="40" y="173" width="160" height="65" rx="4" fill="#fffdf7" stroke="#b6b0a4"/>
+<rect x="280" y="173" width="160" height="65" rx="4" fill="#918e87"/>
+<rect x="520" y="173" width="160" height="65" rx="4" fill="#32312f"/>
+<g fill="none" stroke="#a0432e" stroke-linecap="round" stroke-linejoin="round">
+<path d="M126 160 177 91m-14 6 14-6-3 15" stroke-width="7"/>
+<path d="M366 160 417 91m-14 6 14-6-3 15" stroke-width="4"/>
+<path d="M606 160 657 91m-14 6 14-6-3 15" stroke-width="2"/>
+</g>
+<text x="120" y="273" font-size="22" font-weight="600">白 · 较多</text><text x="360" y="273" font-size="22" font-weight="600">灰 · 中等</text><text x="600" y="273" font-size="22" font-weight="600">黑 · 较少</text>
+<text x="360" y="307" font-size="18" fill="#605d55">返回光量不同，测光判断可能不同</text>
+</g></svg>

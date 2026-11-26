@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="324" viewBox="0 0 720 324" role="img" aria-labelledby="t d">
+<title id="t">人像光线方向，俯视示意</title><desc id="d">三个场景相机都在人物正面，顺光从相机一侧照向人，侧光从人物右侧照过来，逆光从人物身后照过来。</desc>
+<rect width="720" height="324" fill="#eee8dc"/>
+<g stroke="#d0c8bb" fill="none"><path d="M240 20v270M480 20v270"/></g>
+<g text-anchor="middle" font-family="system-ui, PingFang SC, sans-serif" fill="#292824" font-size="22" font-weight="600">
+<text x="120" y="28">顺光</text><text x="360" y="28">侧光</text><text x="600" y="28">逆光</text>
+</g>
+<defs><g id="person"><circle r="23" fill="#d0a081" stroke="#805946" stroke-width="1.5"/><path d="M-16 9 Q0 24 16 9" fill="none" stroke="#805946" stroke-width="3"/><path d="M-34 40 Q0 26 34 40 L34 52 H-34Z" fill="#7c8572"/></g><g id="camera"><rect x="-22" y="-14" width="44" height="29" rx="4" fill="#292824"/><rect x="-8" y="-20" width="16" height="9" rx="2" fill="#292824"/><circle r="8" fill="#eee8dc"/></g></defs>
+<g><use href="#person" transform="translate(120 125)"/><use href="#person" transform="translate(360 125)"/><use href="#person" transform="translate(600 125)"/></g>
+<g><use href="#camera" transform="translate(120 242)"/><use href="#camera" transform="translate(360 242)"/><use href="#camera" transform="translate(600 242)"/></g>
+<g fill="#d6a34c" stroke="#b08638"><circle cx="53" cy="229" r="16"/><circle cx="438" cy="125" r="16"/><circle cx="600" cy="63" r="16"/></g>
+<g stroke="#a0432e" stroke-width="3" stroke-linecap="round" fill="none">
+<path d="M63 211 98 163 m-10 3 10-3-1 11"/><path d="M417 125H387m9-7-9 7 9 7"/><path d="M600 84v16m-7-7 7 7 7-7"/>
+</g>
+<g text-anchor="middle" font-family="system-ui, PingFang SC, sans-serif" fill="#605d55" font-size="19"><text x="120" y="295">脸朝光源</text><text x="360" y="295">半明半暗</text><text x="600" y="295">脸可能落入阴影</text></g>
+</svg>

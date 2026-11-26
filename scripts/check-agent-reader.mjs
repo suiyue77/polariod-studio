@@ -64,7 +64,7 @@ for(const n of notes){
  assert.equal(item.title,n.title);assert.ok(item.description.startsWith(n.author+' · '));
 }
 const permission=fs.readFileSync(root+'permissions/index.html','utf8');
-assert.ok(permission.includes('内容使用许可与权利声明')&&permission.includes('非商业')&&permission.includes('不自动延伸'));
+assert.ok(permission.includes('内容使用许可与权利声明')&&permission.includes('非商业')&&permission.includes('原帖封面')&&permission.includes('帖子内图片与原文')&&permission.includes('重复逐项授权'));
 assert.ok(fs.readFileSync('CONTENT_PERMISSIONS.md','utf8').includes('不向其他网站'));
 assert.ok(llms.includes(j.home+'notes/')&&llms.includes(j.home+'permissions/'));
 

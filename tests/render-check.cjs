@@ -17,7 +17,9 @@ const server=http.createServer((req,res)=>{
  const base='http://127.0.0.1:'+server.address().port;
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH});
  try{
- const guideRoutes=JSON.parse(fs.readFileSync(path.join(root,'agent/site.json'),'utf8')).sections[0].items.map(g=>new URL(g.url).pathname);
+ const reader=JSON.parse(fs.readFileSync(path.join(root,'agent/site.json'),'utf8'));
+ const guideRoutes=reader.sections[0].items.map(g=>new URL(g.url).pathname);
+ const creators=reader.sections[1].items;
  const routes=['/','/learn/',...guideRoutes,'/creators/','/gallery/','/404.html'];
  assert.equal(new Set(guideRoutes).size,guideRoutes.length);
  for(const id of ['metering','portrait-light','photo-diagnosis','spot-metering']) assert.ok(guideRoutes.includes('/learn/'+id+'/'));
@@ -42,6 +44,13 @@ const server=http.createServer((req,res)=>{
  await page.goto(base+'/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.guide-card').count(),3);
  assert.ok(await page.locator('.guide-card[href="/learn/metering/"]').isVisible());
+ if(creators.length) assert.ok(await page.locator('.creator-summary').innerText().then(t=>t.includes('已收录 '+creators.length+' 位创作者')));
+ await page.goto(base+'/creators/',{waitUntil:'networkidle'});
+ assert.equal(await page.locator('.creator-card').count(),creators.length);
+ const creatorLinks=await page.locator('.creator-card a').evaluateAll(els=>els.map(a=>a.getAttribute('href')));
+ assert.deepEqual(creatorLinks,creators.map(c=>c.url));
+ for(const c of creators) assert.ok(await page.locator('.creator-card h3').allTextContents().then(names=>names.includes(c.title)));
+
  await page.goto(base+'/learn/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.guide-topic').count(),3);
  const listed=await page.locator('.guide-card').evaluateAll(els=>els.map(x=>x.getAttribute('href')));

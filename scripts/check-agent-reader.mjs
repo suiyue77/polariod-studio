@@ -11,5 +11,10 @@ assert.ok(html.includes('Agent Reader') && html.includes(j.title) && html.includ
 assert.ok(llms.includes(j.home+'agent/') && llms.includes(j.home+'agent/site.json'));
 for(const section of j.sections){assert.ok(section.title&&section.description&&section.url.startsWith(j.home));assert.ok(Array.isArray(section.items));for(const item of section.items){assert.ok(item.title&&item.description&&/^https:\/\//.test(item.url));}}
 assert.equal(j.sections.length,3);assert.ok(j.sections[0].items.length>0);
+const approved=JSON.parse(fs.readFileSync('src/content/creators.json','utf8')).filter(c=>c.approved);
+assert.deepEqual(j.sections[1].items.map(c=>[c.title,c.url,c.description]),approved.map(c=>[c.name,c.url,c.description]));
+assert.equal(new Set(approved.map(c=>c.url)).size,approved.length);
+for(const c of approved)assert.ok(!new URL(c.url).search&&!new URL(c.url).hash);
+
 assert.ok(!/PRIVATE KEY|github_pat_|ghp_[A-Za-z0-9]{25,}/.test(JSON.stringify(j)));
 console.log('Reader HTML, JSON, llms.txt, source and boundaries PASS');

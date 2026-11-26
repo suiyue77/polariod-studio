@@ -1,1 +1,37 @@
-[{"id":"pending","name":"待确认","url":"https://example.com/","description":"Internal placeholder; not published.","approved":false}]
+[
+  {
+    "id": "black-rabbit",
+    "name": "黑帮Rabbit",
+    "url": "https://www.xiaohongshu.com/user/profile/6323dfc5000000002303a00b",
+    "description": "宝丽来日常、I-2 新手拍摄教程与废片改造，分享实拍创作过程。",
+    "approved": true
+  },
+  {
+    "id": "takidani",
+    "name": "泷谷新次（12月北京）",
+    "url": "https://www.xiaohongshu.com/user/profile/5f7fad87000000000101c014",
+    "description": "宝丽来人像、婚礼纪实与多重曝光创作，展示双曝、四曝及作品装裱。",
+    "approved": true
+  },
+  {
+    "id": "chunchunzi",
+    "name": "纯纯子真的不会拍照呀",
+    "url": "https://www.xiaohongshu.com/user/profile/5e467631000000000100257a",
+    "description": "宝丽来温度控制、偏色排查、闪光灯及 I-2 配件的实践经验。",
+    "approved": true
+  },
+  {
+    "id": "mr-grumpy",
+    "name": "Mr.Grumpy📸",
+    "url": "https://www.xiaohongshu.com/user/profile/66a87bfa000000001d03169e",
+    "description": "宝丽来风景与日常记录、I-2 拍摄心得、相纸原理与废片再利用。",
+    "approved": true
+  },
+  {
+    "id": "zoo-director",
+    "name": "动物园园长",
+    "url": "https://www.xiaohongshu.com/user/profile/60a4dd72000000000101e427",
+    "description": "即时摄影日常、演出记录、自然光创作及废片再创作。",
+    "approved": true
+  }
+]

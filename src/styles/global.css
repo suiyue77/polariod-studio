@@ -134,3 +134,5 @@ p{margin:0}.lead{font-size:17px;color:var(--color-muted);max-width:40rem}
 .note-cover:hover{border-color:var(--cover-ink)}
 .note-card{gap:10px;padding:14px 0 10px}
 @media(max-width:760px){.note-cover{aspect-ratio:2.4/1}.note-cover-topic{font-size:23px}.note-cover-copy{padding:12px 0 12px 16px}.note-card{gap:8px}}
+
+.note-card[id]{scroll-margin-top:20px}

@@ -93,6 +93,10 @@ const server=http.createServer((req,res)=>{
  assert.equal(await page.locator('.note-cover[data-cover-kind="source"] img').count(),noteRecords.filter(n=>n.cover).length);
  assert.ok(await covers.evaluateAll(els=>els.every(e=>{const r=e.getBoundingClientRect();return r.width>100&&r.height>60&&e.getAttribute('aria-label')&&e.querySelector('.note-cover-credit')?.textContent?.trim()})));
  assert.deepEqual(await covers.evaluateAll(els=>els.map(e=>e.getAttribute('href'))),notes.map(n=>n.url));
+ assert.deepEqual(await page.locator('.note-card h3 a').evaluateAll(els=>els.map(e=>e.getAttribute('href'))),notes.map(n=>n.url));
+ assert.deepEqual(await page.locator('.note-card').evaluateAll(els=>els.map(e=>[e.dataset.noteId,e.dataset.linkMode])),notes.map(n=>[n.noteId,n.linkMode]));
+ assert.ok(await page.locator('.note-card .note-source').evaluateAll(els=>els.every(e=>{const u=new URL(e.href);return u.hostname==='www.xiaohongshu.com'&&(u.pathname==='/search_result'||(u.searchParams.get('xsec_source')==='pc_share'&&!!u.searchParams.get('xsec_token')))})));
+
  assert.equal(await page.locator('.notes-grid').first().evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length),label==='desktop'?3:1);
 
  assert.deepEqual(await page.locator('.note-card .note-source').evaluateAll(els=>els.map(e=>e.getAttribute('href'))),notes.map(n=>n.url));
@@ -143,7 +147,7 @@ const server=http.createServer((req,res)=>{
   if(id==='photo-diagnosis') assert.equal(await page.locator('.article-body table').count(),1);
   if(id==='spot-metering'){
    assert.equal(await page.locator('.article-body table').count(),3);
-   assert.equal(await page.locator('.article-body a[href^="https://www.xiaohongshu.com/explore/"]').count(),4);
+   assert.equal(await page.locator('.article-body a[href^="/notes/#note-"],.article-body a[href^="https://www.xiaohongshu.com/search_result?keyword="]').count(),4);
    assert.ok(await page.locator('.article-body').innerText().then(t=>t.includes('不是 Polaroid 发布的相纸动态范围')&&t.includes('本站目前没有完成这组真实相纸对照')));
   }
   if(process.env.SCREENSHOT_DIR && id==='metering'){

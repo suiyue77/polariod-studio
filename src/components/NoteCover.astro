@@ -6,12 +6,13 @@ interface Props {
   category: string;
   title: string;
   url: string;
+  linkLabel?: string;
   cover?: Cover;
 }
-const {topic,motif,category,title,url,cover} = Astro.props;
+const {topic,motif,category,title,url,cover,linkLabel='阅读原帖'} = Astro.props;
 const labels:Record<string,string>={light:'LIGHT & EXPOSURE',practice:'CAMERA & PRACTICE',film:'FILM & CARE',creative:'CREATIVE STUDIES'};
 ---
-<a class="note-cover" href={url} rel="noopener noreferrer" data-category={category} data-cover-kind={cover?'source':'studio'} aria-label={`阅读原帖：${title}（${cover?'获准使用的原帖封面':'本站主题封面'}）`}>
+<a class="note-cover" href={url} rel="noopener noreferrer" data-category={category} data-cover-kind={cover?'source':'studio'} aria-label={`${linkLabel}：${title}（${cover?'获准使用的原帖封面':'本站主题封面'}）`}>
   {cover ? (
     <>
       <img src={cover.src} alt="" title={cover.credit} width="640" height="320" loading="lazy" decoding="async" />

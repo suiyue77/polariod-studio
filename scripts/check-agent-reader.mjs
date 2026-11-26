@@ -32,8 +32,15 @@ assert.equal(new Set(notes.map(n=>n.id)).size,notes.length);
 for(const n of notes){
  assert.ok(n.author&&n.title);
  assert.equal(n.url,'https://www.xiaohongshu.com/explore/'+n.id);
- assert.ok(Object.keys(n).every(k=>['id','title','author','category','url','evidence','summary'].includes(k)));
+ assert.ok(Object.keys(n).every(k=>['id','title','author','category','url','evidence','summary','coverTopic','coverMotif','cover'].includes(k)));
  assert.ok(!n.summary||n.evidence==='body-reviewed');
+ assert.ok(n.coverTopic&&n.coverMotif);
+ if(n.cover){
+  assert.match(n.cover.src,/^\/images\/notes\/[a-z0-9][a-z0-9._-]*\.(webp|png|jpe?g|avif)$/i);
+  assert.ok(['owned','licensed'].includes(n.cover.permission)&&n.cover.credit);
+  assert.ok(fs.existsSync('public'+n.cover.src)&&fs.existsSync(root+n.cover.src.slice(1)));
+ }
+
  const item=section.items.find(i=>i.url===n.url);
  assert.equal(item.title,n.title);assert.ok(item.description.startsWith(n.author+' · '));
 }

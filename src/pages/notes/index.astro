@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import NoteCover from '../../components/NoteCover.astro';
 import { readNotes, evidenceLabel } from '../../lib/reading-notes';
 const groups = await readNotes();
 const count = groups.reduce((n,g)=>n+g.items.length,0);
@@ -23,7 +24,7 @@ const count = groups.reduce((n,g)=>n+g.items.length,0);
       <button type="button" data-topic="all" aria-pressed="true">全部 · {count}</button>
       {groups.map(g=><button type="button" data-topic={g.id} aria-pressed="false">{g.title} · {g.items.length}</button>)}
     </div>
-    <p class="note notes-help">点开原帖阅读；小红书链接可能需要登录。若页面不可用，可在小红书内搜索原题或作者。未阅读全文的条目标注为标题索引或主题已核对。</p>
+    <p class="note notes-help">点开原帖阅读；小红书链接可能需要登录。若页面不可用，可在小红书内搜索原题或作者。未阅读全文的条目标注为标题索引或主题已核对；标注 Studio 的封面为本站原创主题图，不是原帖图片。</p>
     <div class="notes-library">
       {groups.map(g=>(
         <section class="notes-topic" data-section={g.id}>
@@ -34,6 +35,7 @@ const count = groups.reduce((n,g)=>n+g.items.length,0);
           <div class="notes-grid">
             {g.items.map(({data:n})=>(
               <article class="note-card" data-note data-category={g.id} data-search={`${n.title} ${n.author} ${g.title} ${n.summary||''}`}>
+                <NoteCover topic={n.coverTopic} motif={n.coverMotif} category={g.id} title={n.title} url={n.url} cover={n.cover}/>
                 <p class="note-meta">{n.author} <span aria-hidden="true">·</span> {evidenceLabel[n.evidence]}</p>
                 <h3><a href={n.url} rel="noopener noreferrer">{n.title}</a></h3>
                 {n.summary&&<p class="note-summary">{n.summary}</p>}

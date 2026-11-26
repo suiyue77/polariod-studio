@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import { readNotes, evidenceLabel } from '../../lib/reading-notes';
+const groups = await readNotes();
+const count = groups.reduce((n,g)=>n+g.items.length,0);
+---
+<Base title="精选笔记" description="按主题整理的宝丽来社区公开笔记索引，保留作者与原始来源。">
+  <section class="page-intro notes-intro">
+    <p class="eyebrow">03 / Reading list</p>
+    <h1>精选笔记</h1>
+    <p class="lead">从真实社区经验出发，继续学习即时摄影。</p>
+    <p class="note notes-scope">公开笔记标题与原作者链接；不是转载文章或经过验证的拍摄结论。<a class="text-link" href="/permissions/">内容使用许可</a></p>
+  </section>
+  <section class="page-content notes-content">
+    <div class="notes-toolbar">
+      <div>
+        <label for="note-search" class="sr-only">搜索笔记标题或作者</label>
+        <input id="note-search" type="search" placeholder="搜索标题、作者或关键词" autocomplete="off"/>
+      </div>
+      <p class="note" id="notes-count" aria-live="polite">共 {count} 篇笔记</p>
+    </div>
+    <div class="filter-bar notes-filter" aria-label="按笔记主题筛选">
+      <button type="button" data-topic="all" aria-pressed="true">全部 · {count}</button>
+      {groups.map(g=><button type="button" data-topic={g.id} aria-pressed="false">{g.title} · {g.items.length}</button>)}
+    </div>
+    <p class="note notes-help">点开原帖阅读；小红书链接可能需要登录。若页面不可用，可在小红书内搜索原题或作者。未阅读全文的条目标注为标题索引或主题已核对。</p>
+    <div class="notes-library">
+      {groups.map(g=>(
+        <section class="notes-topic" data-section={g.id}>
+          <div class="notes-heading">
+            <div><h2>{g.title}</h2><p class="note">{g.description}</p></div>
+            <a class="text-link" href={g.guide}>{g.guideTitle} →</a>
+          </div>
+          <div class="notes-grid">
+            {g.items.map(({data:n})=>(
+              <article class="note-card" data-note data-category={g.id} data-search={`${n.title} ${n.author} ${g.title} ${n.summary||''}`}>
+                <p class="note-meta">{n.author} <span aria-hidden="true">·</span> {evidenceLabel[n.evidence]}</p>
+                <h3><a href={n.url} rel="noopener noreferrer">{n.title}</a></h3>
+                {n.summary&&<p class="note-summary">{n.summary}</p>}
+                <div class="note-actions">
+                  <a class="creator-link note-source" href={n.url} rel="noopener noreferrer" aria-label={`阅读原帖：${n.title}`}>
+                    <span class="creator-platform" data-platform="xiaohongshu">小红书</span>
+                    <span class="creator-link-text">阅读原帖 <span aria-hidden="true">↗</span></span>
+                  </a>
+                  <a class="text-link note-search-link" href={`https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(n.title)}`} rel="noopener noreferrer" aria-label={`在小红书搜索原题：${n.title}`}>搜原题</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+    <p class="notes-empty" hidden>没有符合条件的笔记。换个关键词或主题试试。</p>
+  </section>
+</Base>
+<script>
+  const input = document.querySelector<HTMLInputElement>('#note-search');
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('.notes-filter button')];
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-note]')];
+  const sections = [...document.querySelectorAll<HTMLElement>('[data-section]')];
+  const status = document.querySelector('#notes-count');
+  const empty = document.querySelector<HTMLElement>('.notes-empty');
+  let topic = 'all';
+  function update() {
+    const q = (input?.value||'').trim().toLocaleLowerCase();
+    let visible = 0;
+    cards.forEach(card=>{
+      card.hidden = !(topic==='all'||card.dataset.category===topic) ||
+        !(card.dataset.search||'').toLocaleLowerCase().includes(q);
+      if(!card.hidden) visible++;
+    });
+    sections.forEach(section=>section.hidden=!section.querySelector('[data-note]:not([hidden])'));
+    if(status)status.textContent=`显示 ${visible} / ${cards.length} 篇笔记`;
+    if(empty)empty.hidden=visible>0;
+  }
+  buttons.forEach(button=>button.addEventListener('click',()=>{
+    topic=button.dataset.topic||'all';
+    buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+    update();
+  }));
+  input?.addEventListener('input',update);
+</script>

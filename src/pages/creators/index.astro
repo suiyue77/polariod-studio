@@ -17,12 +17,12 @@ function platform(url: string) {
 }
 ---
 <Base title="摄影博主">
-  <section class="page-intro">
+  <section class="page-intro creator-intro">
     <p class="eyebrow">02 / Discover</p>
     <h1>摄影博主</h1>
     <p class="lead">精选即时摄影创作者。通过公开主页发现不同的实拍风格、技法与创作经验。</p>
   </section>
-  <section class="page-content">
+  <section class="page-content creator-page-content">
     {creators.length ? (
       <div class="creator-directory">
         <p class="note creator-count">已收录 {creators.length} 位创作者</p>
@@ -33,7 +33,7 @@ function platform(url: string) {
             <article class="creator-card">
               <div class="creator-avatar" aria-hidden="true">
                 <span>{initial}</span>
-                {c.avatar && <img src={c.avatar.src} alt="" width="56" height="56" loading="lazy" decoding="async" />}
+                {c.avatar && <img src={c.avatar.src} alt="" title={c.avatar.credit} width="56" height="56" loading="lazy" decoding="async" />}
               </div>
               <div class="creator-detail">
                 <h2>{c.name}</h2>

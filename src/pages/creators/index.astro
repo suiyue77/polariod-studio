@@ -3,5 +3,5 @@ import Base from '../../layouts/Base.astro';
 import {getCollection} from 'astro:content';
 const creators=(await getCollection('creators')).filter(c=>c.data.approved);
 ---
-<Base title="摄影博主"><section class="page-intro"><p class="eyebrow">02 / Discover</p><h1>摄影博主</h1><p class="lead">一份个人策展名单，记录值得长期关注的即时摄影创作者。</p></section><section class="page-content">{creators.length?<div class="guide-grid">{creators.map(c=><article class="guide-card"><h3>{c.data.name}</h3><p>{c.data.description}</p><a class="text-link" href={c.data.url} rel="noopener noreferrer">访问原始主页 →</a></article>)}</div>:<div class="empty"><h2>等待第一批推荐</h2><p>目前没有经过站主确认的摄影博主。名单开放后，每位创作者都会附上推荐理由和原始主页链接，不搬运未经授权的作品。</p></div>}</section></Base>
+<Base title="摄影博主"><section class="page-intro"><p class="eyebrow">02 / Discover</p><h1>摄影博主</h1><p class="lead">精选即时摄影创作者。通过公开主页发现不同的实拍风格、技法与创作经验。</p></section><section class="page-content">{creators.length?<div class="guide-grid">{creators.map(c=><article class="guide-card creator-card"><h3>{c.data.name}</h3><p>{c.data.description}</p><a class="text-link" href={c.data.url} rel="noopener noreferrer">访问原始主页 →</a></article>)}</div>:<div class="empty"><h2>等待第一批推荐</h2><p>目前没有经过站主确认的摄影博主。名单开放后，每位创作者都会附上推荐理由和原始主页链接，不搬运未经授权的作品。</p></div>}</section></Base>
 

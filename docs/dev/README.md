@@ -15,3 +15,7 @@ Guides are owned by the Astro content collection; the Learn topic view must incl
 ### Authenticated community research
 
 Use the already-authorized browser session for sources that need login. On Xiaohongshu, opening a collection card’s empty bare-ID link returned 404, while searching for the same title and opening its normal visible search-result link successfully revealed the public note. Prefer ordinary site navigation; do not reconstruct access tokens or bypass a denial. Cite the public title, author if appropriate, and clean source URL, not session-specific URL parameters or private collection/following records. Treat title-only or unread image-based notes as leads, not evidence.
+
+### Creator directory and account safety
+
+Review a candidate’s actual public profile and relevant work before adding an owner-approved creator. Public entries contain only the public display name, clean profile URL and editorial description, never private relationship lists, counts, account identity or session parameters. For authenticated research, relationship lists are read-only: use exact verified navigation targets and normal scrolling; do not interact with follow, unfollow, follow-back, or remove-follower controls. Compare visible counts before and after if checking relationship lists. Store any explicitly requested personal snapshot privately, outside this public repository. A nickname match or truncated bio alone is not proof of identity or topic coverage. Keep homepage and Reader consistent with the approved collection.

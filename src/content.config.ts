@@ -8,10 +8,8 @@ const readingNotes=defineCollection({loader:file('./src/content/reading-notes.js
  title:z.string().min(1),author:z.string().min(1),category:z.enum(['light','practice','film','creative']),
  url:z.string().regex(/^https:\/\/www\.xiaohongshu\.com\/explore\/[0-9a-f]{24}$/),
  evidence:z.enum(['title-only','topic-verified','body-reviewed']),summary:z.string().min(1).optional(),
- coverTopic:z.string().min(1).max(24),
- coverMotif:z.enum(['camera','light','film','color','meter','check','double','landscape','lens','flower','portrait','temperature','architecture','print','music']),
  share:z.object({url:z.string().url(),verifiedOn:z.string().regex(/^\d{4}-\d{2}-\d{2}$/),verification:z.literal('logged-in-browser'),source:z.literal('platform-share-copy')}).optional(),
- cover:z.object({src:z.string().regex(/^\/images\/notes\/[a-z0-9][a-z0-9._-]*\.(webp|png|jpe?g|avif)$/i),permission:z.enum(['owned','licensed']),credit:z.string().min(1)}).optional()
+ cover:z.object({src:z.string().regex(/^\/images\/notes\/[a-z0-9][a-z0-9._-]*\.(webp|png|jpe?g|avif)$/i),permission:z.enum(['owned','licensed']),permissionBasis:z.literal('site-owner-confirmed-scope'),credit:z.string().min(1),source:z.literal('visible-platform-note-card-cover'),width:z.number().int().positive(),height:z.number().int().positive(),sha256:z.string().regex(/^[0-9a-f]{64}$/),verifiedOn:z.string().regex(/^\d{4}-\d{2}-\d{2}$/)}).optional()
 }).superRefine((v,ctx)=>{if(v.summary&&v.evidence!=='body-reviewed')ctx.addIssue({code:z.ZodIssueCode.custom,path:['summary'],message:'Summary requires reviewed note body'});if(v.share&&!isPublicShareUrl(v.share.url,v.url))ctx.addIssue({code:z.ZodIssueCode.custom,path:['share'],message:'Only exact platform-generated public share URLs may be published'});})});
 export const collections={guides,creators,photos,readingNotes};
 

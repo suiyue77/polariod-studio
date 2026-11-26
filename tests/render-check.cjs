@@ -89,8 +89,17 @@ const server=http.createServer((req,res)=>{
  const noteRecords=JSON.parse(fs.readFileSync('src/content/reading-notes.json','utf8'));
  const covers=page.locator('.note-cover');
  assert.equal(await covers.count(),notes.length);
- assert.equal(await page.locator('.note-cover[data-cover-kind="studio"] svg').count(),noteRecords.filter(n=>!n.cover).length);
+ assert.equal(await page.locator('.note-cover[data-cover-kind="unavailable"]').count(),noteRecords.filter(n=>!n.cover).length);
  assert.equal(await page.locator('.note-cover[data-cover-kind="source"] img').count(),noteRecords.filter(n=>n.cover).length);
+ assert.equal(await page.locator('.note-cover svg').count(),0);
+ const sourceImages=await page.locator('.note-card').evaluateAll(els=>els.map(e=>({id:e.dataset.noteId,src:e.querySelector('.note-cover img')?.getAttribute('src'),width:Number(e.querySelector('.note-cover img')?.getAttribute('width')),height:Number(e.querySelector('.note-cover img')?.getAttribute('height'))})));
+ for(const item of sourceImages){
+  const record=noteRecords.find(n=>n.id===item.id);
+  assert.equal(item.src,record.cover.src);assert.equal(item.width,record.cover.width);assert.equal(item.height,record.cover.height);
+ }
+ await page.locator('.note-cover img').evaluateAll(imgs=>Promise.all(imgs.map(async img=>{img.loading='eager';await img.decode();})));
+ assert.ok(await page.locator('.note-cover img').evaluateAll(imgs=>imgs.every(i=>i.complete&&i.naturalWidth===Number(i.getAttribute('width'))&&i.naturalHeight===Number(i.getAttribute('height'))&&getComputedStyle(i).objectFit==='contain')));
+
  assert.ok(await covers.evaluateAll(els=>els.every(e=>{const r=e.getBoundingClientRect();return r.width>100&&r.height>60&&e.getAttribute('aria-label')&&e.querySelector('.note-cover-credit')?.textContent?.trim()})));
  assert.deepEqual(await covers.evaluateAll(els=>els.map(e=>e.getAttribute('href'))),notes.map(n=>n.url));
  assert.deepEqual(await page.locator('.note-card h3 a').evaluateAll(els=>els.map(e=>e.getAttribute('href'))),notes.map(n=>n.url));

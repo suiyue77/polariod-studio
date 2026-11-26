@@ -83,6 +83,8 @@ Flip 的闪光灯会根据距离调整输出，标称最远约 4.5 米（f/8 条
 
 资料：[Flip 官方发布说明](https://press.polaroid.com/247783-introducing-the-polaroid-flip/)；[Flip 官方产品介绍](https://www.polaroid.com/en_us/products/flip-polaroid-camera)；[Polaroid 官方创意摄影教程](https://www.polaroid.com/en_us/blog/education/be-creative-with-polaroid-camera-and-film)。
 
+进一步实操：[Lightme 测光实战：先量反差，再选曝光](/learn/spot-metering/)。
+
 ## 07 用三张相纸做一个小实验
 
 这是 Studio 提议的练习方法，尚未在本站进行真实相纸对照试验，不是已验证的相机标定数据。

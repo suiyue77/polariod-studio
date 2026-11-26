@@ -47,6 +47,12 @@ const server=http.createServer((req,res)=>{
  if(creators.length) assert.ok(await page.locator('.creator-summary').innerText().then(t=>t.includes('已收录 '+creators.length+' 位创作者')));
  await page.goto(base+'/creators/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.creator-card').count(),creators.length);
+ const columns=await page.locator('.creator-directory').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length);
+ assert.equal(columns,label==='desktop'?3:1);
+ if(label==='desktop'&&creators.length===5){
+  assert.ok(await page.locator('.creator-card').last().evaluate(el=>el.getBoundingClientRect().bottom<=window.innerHeight),'five creators should fit in the desktop first viewport');
+ }
+
  const creatorLinks=await page.locator('.creator-card a').evaluateAll(els=>els.map(a=>a.getAttribute('href')));
  assert.deepEqual(creatorLinks,creators.map(c=>c.url));
  for(const c of creators) assert.ok(await page.locator('.creator-card h2').allTextContents().then(names=>names.includes(c.title)));
@@ -58,6 +64,13 @@ const server=http.createServer((req,res)=>{
   assert.equal(geometry.w,56);assert.equal(geometry.h,56);assert.ok(geometry.radius==='50%'||parseFloat(geometry.radius)>=28);
   assert.equal((await a.locator('span').innerText()).trim(),Array.from(c.title.trim())[0]);
   assert.equal(await a.locator('img').count(),approvedCreators[i].avatar?1:0);
+  if(approvedCreators[i].avatar){
+   const img=a.locator('img');
+   assert.equal(await img.getAttribute('src'),approvedCreators[i].avatar.src);
+   await img.evaluate(async el=>{el.loading='eager';await el.decode();});
+   assert.ok(await img.evaluate(el=>el.complete&&el.naturalWidth>0&&el.naturalHeight>0));
+  }
+
   if(new URL(c.url).hostname.endsWith('xiaohongshu.com'))assert.equal(await card.locator('.creator-platform').innerText(),'小红书');
   const link=card.locator('.creator-link');
   assert.ok((await link.boundingBox()).height>=44);

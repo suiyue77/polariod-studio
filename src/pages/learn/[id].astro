@@ -3,7 +3,20 @@ import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
 export async function getStaticPaths(){return (await getCollection('guides')).map(guide=>({params:{id:guide.id},props:{guide}}));}
 const {guide}=Astro.props;
-const {Content}=await render(guide);
+const {Content,headings}=await render(guide);
+const chapters=headings.filter(h=>h.depth===2);
 ---
-<Base title={guide.data.title} description={guide.data.description}><article class="article"><a class="text-link" href="/learn/">← 返回教程</a><div class="eyebrow mt-6">{guide.data.category} / {guide.data.minutes} 分钟阅读</div><h1>{guide.data.title}</h1><p class="lead">{guide.data.description}</p><div class="article-body prose"><Content/></div></article></Base>
-
+<Base title={guide.data.title} description={guide.data.description}>
+  <article class="article">
+    <a class="text-link" href="/learn/">← 返回教程</a>
+    <div class="eyebrow mt-6">{guide.data.category} / {guide.data.minutes} 分钟阅读</div>
+    <h1>{guide.data.title}</h1>
+    <p class="lead">{guide.data.description}</p>
+    {chapters.length>=4 && <nav class="article-toc" aria-label="本文目录">
+      <p class="eyebrow">In this guide / 本文目录</p>
+      <ol>{chapters.map(h=><li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+    </nav>}
+    <div class="article-body prose"><Content/></div>
+    <div class="article-end"><a class="text-link" href="/learn/">查看所有教程 →</a></div>
+  </article>
+</Base>

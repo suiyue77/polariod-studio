@@ -34,3 +34,39 @@ p{margin:0}.lead{font-size:17px;color:var(--color-muted);max-width:40rem}
 @media(max-width:350px){.nav{gap:13px}.collection-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
+
+/* Learn: keep the editorial hierarchy as the collection grows. */
+.guide-library{display:grid;gap:42px}
+.guide-jumps{display:flex;gap:10px;flex-wrap:wrap}
+.guide-jumps a{border:1px solid var(--color-rule);padding:9px 14px;font-size:14px;line-height:1.5}
+.guide-jumps a:hover{border-color:var(--color-accent);color:var(--color-accent)}
+.guide-jumps span{font-size:12px;color:var(--color-muted);margin-left:5px}
+.guide-topic{scroll-margin-top:20px}
+.guide-topic-head{margin-bottom:20px}
+.guide-topic-head h2{font-size:clamp(26px,3vw,34px);margin-bottom:7px}
+.article-toc{margin-top:28px;padding:18px 0 2px;border-top:1px solid var(--color-rule)}
+.article-toc ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 24px;list-style:none;padding:0;margin:10px 0 0}
+.article-toc li{min-width:0}
+.article-toc a{display:block;font-size:14px;color:var(--color-muted);padding:5px 0;overflow-wrap:anywhere}
+.article-toc a:hover{color:var(--color-accent);text-decoration:underline;text-underline-offset:3px}
+.article .prose h2{scroll-margin-top:20px}
+.article .prose ul,.article .prose ol{padding-left:1.45em;margin:0 0 23px}
+.article .prose ul{list-style:disc}
+.article .prose ol{list-style:decimal}
+.article .prose li{margin:5px 0}
+.article .prose img{display:block;width:100%;height:auto;margin:8px 0 10px;border:1px solid var(--color-rule)}
+.article .prose table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:15px;line-height:1.6;margin:0 0 24px;overflow-wrap:anywhere}
+.article .prose th,.article .prose td{text-align:left;vertical-align:top;padding:11px 10px;border-bottom:1px solid var(--color-rule)}
+.article .prose th{font-weight:650;background:#eee8dc}
+.article .prose th:first-child,.article .prose td:first-child{width:38%}
+.article .prose p>em:only-child{font-size:13px;color:var(--color-muted)}
+.article-end{border-top:1px solid var(--color-rule);margin-top:32px;padding-top:20px}
+@media(max-width:760px){
+ .guide-library{gap:32px}
+ .guide-jumps{gap:8px}
+ .guide-jumps a{padding:8px 10px}
+ .guide-topic-head{margin-bottom:13px}
+ .article-toc ol{grid-template-columns:minmax(0,1fr);gap:2px}
+ .article .prose table{font-size:14px}
+ .article .prose th,.article .prose td{padding:9px 7px}
+}

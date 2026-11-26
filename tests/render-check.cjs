@@ -17,7 +17,10 @@ const server=http.createServer((req,res)=>{
  const base='http://127.0.0.1:'+server.address().port;
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH});
  try{
- const routes=['/','/learn/','/learn/first-frame/','/learn/protect-from-light/','/learn/photo-notes/','/learn/flip-shooting/','/learn/camera-care/','/creators/','/gallery/','/404.html'];
+ const guideRoutes=JSON.parse(fs.readFileSync(path.join(root,'agent/site.json'),'utf8')).sections[0].items.map(g=>new URL(g.url).pathname);
+ const routes=['/','/learn/',...guideRoutes,'/creators/','/gallery/','/404.html'];
+ assert.equal(new Set(guideRoutes).size,guideRoutes.length);
+ for(const id of ['metering','portrait-light','photo-diagnosis']) assert.ok(guideRoutes.includes('/learn/'+id+'/'));
  let n=0;
  for(const [label,opts] of [['desktop',{viewport:{width:1440,height:900}}],['mobile',{viewport:{width:440,height:956},deviceScaleFactor:3,isMobile:true,hasTouch:true}]]){
  const context=await browser.newContext(opts);
@@ -33,18 +36,46 @@ const server=http.createServer((req,res)=>{
  await page.locator('img').evaluateAll(imgs=>Promise.all(imgs.map(async x=>{x.loading='eager';await x.decode();})));
  assert.ok(await page.locator('img').evaluateAll(imgs=>imgs.every(x=>x.complete&&x.naturalWidth>0)),label+' '+route+' broken images');
  assert.equal(layout.bodyColor,'rgb(247, 244, 237)',label+' '+route+' CSS');
- assert.equal(await page.locator('nav a').count(),3);
+ assert.equal(await page.locator('header nav a').count(),3);
  n++;
  }
+ await page.goto(base+'/',{waitUntil:'networkidle'});
+ assert.equal(await page.locator('.guide-card').count(),3);
+ assert.ok(await page.locator('.guide-card[href="/learn/metering/"]').isVisible());
  await page.goto(base+'/learn/',{waitUntil:'networkidle'});
- for(const id of ['flip-shooting','camera-care']){
-  await page.locator('a[href="/learn/'+id+'/"]').click();
+ assert.equal(await page.locator('.guide-topic').count(),3);
+ const listed=await page.locator('.guide-card').evaluateAll(els=>els.map(x=>x.getAttribute('href')));
+ assert.deepEqual([...listed].sort(),[...guideRoutes].sort());
+ await page.locator('.guide-jumps a[href="#shooting"]').click();
+ assert.equal(new URL(page.url()).hash,'#shooting');
+ for(const id of ['flip-shooting','camera-care','metering','portrait-light','photo-diagnosis']){
+  await page.locator('.guide-card[href="/learn/'+id+'/"]').click();
   assert.ok(page.url().endsWith('/learn/'+id+'/'));
   assert.ok(await page.locator('.article-body h2').count()>=5);
-  assert.ok(await page.locator('.article-body a[href^="https://support.polaroid.com/"]').count()>=3);
-  await page.locator('a.text-link[href="/learn/"]').click();
+  assert.ok(await page.locator('.article-body a[href^="https://support.polaroid.com/"]').count()>=1);
+  const toc=page.locator('.article-toc a');
+  const headingCount=await page.locator('.article-body h2').count();
+  assert.equal(await toc.count(),headingCount);
+  assert.ok(await toc.evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1)))?.tagName==='H2')));
+  await toc.last().click();
+  assert.ok(new URL(page.url()).hash.length>1);
+  if(id==='metering'){
+   assert.equal(await page.locator('.article-body table').count(),2);
+   assert.equal(await page.locator('.article-body img').count(),1);
+   assert.ok(await page.locator('.article-body').innerText().then(t=>t.includes('不是最终照片亮度')&&t.includes('尚未在本站进行真实相纸对照试验')));
+  }
+  if(id==='portrait-light') assert.equal(await page.locator('.article-body img').count(),1);
+  if(id==='photo-diagnosis') assert.equal(await page.locator('.article-body table').count(),1);
+  if(process.env.SCREENSHOT_DIR && id==='metering'){
+   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+   await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-metering-top.png')});
+   await page.locator('.article-body table').first().scrollIntoViewIfNeeded();
+   await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-metering-table.png')});
+  }
+  await page.getByRole('link',{name:'← 返回教程',exact:true}).click();
   assert.ok(page.url().endsWith('/learn/'));
  }
+ if(process.env.SCREENSHOT_DIR) await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-learn.png')});
  await page.goto(base+'/gallery/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.gallery-item:visible').count(),3);
  await page.getByRole('button',{name:'静物',exact:true}).click();
@@ -58,7 +89,7 @@ const server=http.createServer((req,res)=>{
  await page.getByRole('button',{name:'全部',exact:true}).click();
  assert.equal(await page.locator('.gallery-item:visible').count(),3);
  assert.deepEqual(failures,[],label+' browser errors');
- console.log(label+': '+routes.length+' routes, no overflow or broken images, gallery filter/open/close PASS');
+ console.log(label+': '+routes.length+' routes, no overflow or broken images, guide grouping/TOC and gallery filter/open/close PASS');
  await context.close();
  }
  console.log('Total rendered route checks:',n);

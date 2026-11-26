@@ -1,6 +1,48 @@
 ---
 import { getCollection } from 'astro:content';
-const guides=(await getCollection('guides')).sort((a,b)=>a.data.number-b.data.number);
+const { variant = 'all' } = Astro.props as { variant?: 'all' | 'featured' };
+const guides = (await getCollection('guides')).sort((a,b) => a.data.number-b.data.number);
+const featuredIds = ['first-frame', 'flip-shooting', 'metering'];
+const groups = [
+  { id: 'basics', title: '入门与相纸', description: '装入第一盒相纸，学会显影与保养。', categories: ['入门','显影','保养'] },
+  { id: 'shooting', title: '拍摄与用光', description: '从对焦、闪光到测光，理解光线如何影响照片。', categories: ['拍摄','技术'] },
+  { id: 'practice', title: '诊断与练习', description: '读懂废片、记录条件，逐步建立自己的经验。', categories: ['诊断','创作'] },
+];
+const sections = groups.map(g => ({ ...g, items: guides.filter(guide => g.categories.includes(guide.data.category)) }));
+const remaining = guides.filter(guide => !groups.some(g => g.categories.includes(guide.data.category)));
+if (remaining.length) sections.push({id:'more',title:'其他教程',description:'继续探索即时摄影。',categories:[],items:remaining});
+const featured = featuredIds.flatMap(id => guides.filter(g => g.id === id));
+const visibleSections = sections.filter(g => g.items.length);
 ---
-<div class="guide-grid">{guides.map(g=><a class="guide-card" href={`/learn/${g.id}/`}><div class="eyebrow">{String(g.data.number).padStart(2,'0')} / {g.data.category} · {g.data.minutes} 分钟</div><h3>{g.data.title}</h3><p>{g.data.description}</p><span class="text-link">阅读教程 →</span></a>)}</div>
-
+{variant === 'featured' ? (
+  <div class="guide-grid">{featured.map(g => (
+    <a class="guide-card" href={`/learn/${g.id}/`}>
+      <div class="eyebrow">{g.data.category} · {g.data.minutes} 分钟</div>
+      <h3>{g.data.title}</h3>
+      <p>{g.data.description}</p>
+      <span class="text-link">阅读教程 →</span>
+    </a>
+  ))}</div>
+) : (
+  <div class="guide-library">
+    <div class="guide-jumps" aria-label="教程主题">
+      {visibleSections.map(section => <a href={`#${section.id}`}>{section.title} <span>{section.items.length} 篇</span></a>)}
+    </div>
+    {visibleSections.map(section => (
+      <section id={section.id} class="guide-topic" aria-labelledby={`topic-${section.id}`}>
+        <div class="guide-topic-head">
+          <h2 id={`topic-${section.id}`}>{section.title}</h2>
+          <p class="note">{section.description}</p>
+        </div>
+        <div class="guide-grid">{section.items.map(g => (
+          <a class="guide-card" href={`/learn/${g.id}/`}>
+            <div class="eyebrow">{g.data.category} · {g.data.minutes} 分钟</div>
+            <h3>{g.data.title}</h3>
+            <p>{g.data.description}</p>
+            <span class="text-link">阅读教程 →</span>
+          </a>
+        ))}</div>
+      </section>
+    ))}
+  </div>
+)}

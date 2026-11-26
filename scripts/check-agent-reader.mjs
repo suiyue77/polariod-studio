@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 import { isPublicShareUrl,noteAccess } from '../src/lib/note-links.mjs';
 const root='dist/';
 const j=JSON.parse(fs.readFileSync(root+'agent/site.json','utf8'));
@@ -38,17 +39,26 @@ const notes=JSON.parse(fs.readFileSync('src/content/reading-notes.json','utf8'))
 const section=j.sections.find(s=>s.title==='精选笔记');
 assert.ok(section&&section.url===j.home+'notes/'&&section.reference.url===j.home+'permissions/');
 assert.equal(notes.length,section.items.length);
+assert.equal(notes.filter(n=>n.cover?.source==='visible-platform-note-card-cover').length,notes.length,'Current curated notes must have real source covers');
 assert.equal(new Set(notes.map(n=>n.id)).size,notes.length);
 for(const n of notes){
  assert.ok(n.author&&n.title);
  assert.equal(n.url,'https://www.xiaohongshu.com/explore/'+n.id);
- assert.ok(Object.keys(n).every(k=>['id','title','author','category','url','evidence','summary','coverTopic','coverMotif','cover','share'].includes(k)));
+ assert.ok(Object.keys(n).every(k=>['id','title','author','category','url','evidence','summary','cover','share'].includes(k)));
  assert.ok(!n.summary||n.evidence==='body-reviewed');
- assert.ok(n.coverTopic&&n.coverMotif);
  if(n.cover){
   assert.match(n.cover.src,/^\/images\/notes\/[a-z0-9][a-z0-9._-]*\.(webp|png|jpe?g|avif)$/i);
   assert.ok(['owned','licensed'].includes(n.cover.permission)&&n.cover.credit);
   assert.ok(fs.existsSync('public'+n.cover.src)&&fs.existsSync(root+n.cover.src.slice(1)));
+  assert.equal(n.cover.source,'visible-platform-note-card-cover');
+  assert.equal(n.cover.permissionBasis,'site-owner-confirmed-scope');
+  assert.ok(n.cover.credit.startsWith(n.author+' · '));
+  assert.ok(n.cover.width>0&&n.cover.height>0);
+  assert.match(n.cover.verifiedOn,/^\d{4}-\d{2}-\d{2}$/);
+  assert.ok(n.cover.src.split('/').pop().startsWith(n.id+'.'));
+  for(const file of ['public'+n.cover.src,root+n.cover.src.slice(1)]){
+   assert.equal(createHash('sha256').update(fs.readFileSync(file)).digest('hex'),n.cover.sha256);
+  }
  }
 
  if(n.share){

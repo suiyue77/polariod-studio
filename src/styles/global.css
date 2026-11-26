@@ -117,22 +117,16 @@ p{margin:0}.lead{font-size:17px;color:var(--color-muted);max-width:40rem}
 @media(min-width:761px) and (max-width:1100px){.notes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.nav{flex-wrap:wrap;gap:12px 17px}.notes-intro{padding:36px 0 24px}.notes-grid{grid-template-columns:minmax(0,1fr)}.notes-toolbar{align-items:stretch;flex-direction:column;gap:8px}.notes-toolbar>div{max-width:none}.notes-help{margin-bottom:20px}.notes-library{gap:26px}.note-card{padding:14px 0 6px;gap:6px}}
 
-/* Original editorial covers: concise horizontal graphics with an explicit source label. */
-.note-cover{--cover-bg:#ece4d6;--cover-ink:#745e43;position:relative;display:grid;grid-template-columns:minmax(0,1fr) 44%;align-items:center;isolation:isolate;overflow:hidden;width:100%;aspect-ratio:2.25/1;border:1px solid #c3b6a142;border-radius:3px;background:var(--cover-bg);color:var(--cover-ink)}
-.note-cover[data-category=light]{--cover-bg:#eee4cd;--cover-ink:#806335}
-.note-cover[data-category=practice]{--cover-bg:#e0e6df;--cover-ink:#4b6251}
-.note-cover[data-category=film]{--cover-bg:#e7dedb;--cover-ink:#885e59}
-.note-cover[data-category=creative]{--cover-bg:#dfe6e9;--cover-ink:#4d6272}
-.note-cover-copy{display:flex;flex-direction:column;align-items:start;justify-content:center;padding:14px 0 14px 16px;gap:9px;min-width:0;z-index:1}
-.note-cover-kicker{font-size:9px;letter-spacing:.12em;font-weight:650;line-height:1.3}
-.note-cover-topic{font-family:var(--serif);font-size:clamp(18px,1.65vw,24px);line-height:1.3;font-weight:500;overflow-wrap:anywhere}
-.note-cover-credit{font-size:10px;line-height:1.35;opacity:.9}
-.note-cover-art{display:block;width:100%;height:100%;padding:7px;max-height:100%;overflow:hidden}
-.note-cover[data-cover-kind=source]{display:block;background:#e9e3d8}
-.note-cover[data-cover-kind=source] img{width:100%;height:100%;display:block;object-fit:contain}
-.note-cover[data-cover-kind=source] .note-cover-credit{position:absolute;bottom:5px;left:5px;max-width:calc(100% - 10px);background:#f7f4edeb;color:var(--color-ink);padding:4px 6px;opacity:1}
-.note-cover:hover{border-color:var(--cover-ink)}
-.note-card{gap:10px;padding:14px 0 10px}
-@media(max-width:760px){.note-cover{aspect-ratio:2.4/1}.note-cover-topic{font-size:23px}.note-cover-copy{padding:12px 0 12px 16px}.note-card{gap:8px}}
-
+/* Source covers: preserve original composition; keep a compact reading-list layout. */
+.note-card{display:grid;grid-template-columns:minmax(0,37%) minmax(0,1fr);align-items:start;gap:14px;padding:16px 0 12px}
+.note-cover{display:grid;place-items:center;width:100%;aspect-ratio:3/4;overflow:hidden;border-radius:3px;background:#e9e3d8;border:1px solid var(--color-rule);color:var(--color-muted)}
+.note-cover img{display:block;width:100%;height:100%;min-height:0;object-fit:contain}
+.note-cover[data-cover-kind=unavailable]{font-size:12px;padding:8px;text-align:center}
+.note-cover:hover{border-color:var(--color-accent)}
+.note-card-content{display:flex;flex-direction:column;align-items:flex-start;align-self:stretch;min-width:0;gap:7px}
+.note-card-content h3{font-size:17px;line-height:1.45}
+.note-card-content .note-meta{font-size:12px}
+.note-card-content .note-summary{font-size:13px}
+.note-card-content .note-actions{gap:4px 10px}
 .note-card[id]{scroll-margin-top:20px}
+@media(max-width:760px){.note-card{grid-template-columns:minmax(0,34%) minmax(0,1fr);gap:14px;padding:14px 0 10px}.note-card-content h3{font-size:18px}}

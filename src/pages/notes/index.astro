@@ -12,7 +12,7 @@ const directCount = groups.flatMap(g=>g.items).filter(n=>noteAccess(n.data).mode
     <p class="eyebrow">03 / Reading list</p>
     <h1>精选笔记</h1>
     <p class="lead">从真实社区经验出发，继续学习即时摄影。</p>
-    <p class="note notes-scope">公开笔记标题与原作者链接；不是转载文章或经过验证的拍摄结论。<a class="text-link" href="/permissions/">内容使用许可</a></p>
+    <p class="note notes-scope">真实原帖封面、原题与作者；社区经验不等于经验证的拍摄结论。<a class="text-link" href="/permissions/">内容使用许可</a></p>
   </section>
   <section class="page-content notes-content">
     <div class="notes-toolbar">
@@ -26,7 +26,7 @@ const directCount = groups.flatMap(g=>g.items).filter(n=>noteAccess(n.data).mode
       <button type="button" data-topic="all" aria-pressed="true">全部 · {count}</button>
       {groups.map(g=><button type="button" data-topic={g.id} aria-pressed="false">{g.title} · {g.items.length}</button>)}
     </div>
-    <p class="note notes-help">{directCount} 篇分享链接已在登录浏览器验证，其余提供站内搜索入口。小红书可能要求登录或更新分享链接，保留“搜原题”作为备用入口。标注 Studio 的封面为本站主题图，并非原帖图片。</p>
+    <p class="note notes-help">{directCount} 篇分享链接已在登录浏览器验证，其余提供站内搜索入口。小红书可能要求登录或更新分享链接，保留“搜原题”作为备用入口。封面来自对应小红书原帖，保留完整构图及原作者署名。</p>
     <div class="notes-library">
       {groups.map(g=>(
         <section class="notes-topic" data-section={g.id}>
@@ -37,7 +37,8 @@ const directCount = groups.flatMap(g=>g.items).filter(n=>noteAccess(n.data).mode
           <div class="notes-grid">
             {g.items.map(({data:n})=>{const access=noteAccess(n);return (
               <article class="note-card" id={`note-${new URL(n.url).pathname.split('/').at(-1)}`} data-note data-note-id={new URL(n.url).pathname.split('/').at(-1)} data-link-mode={access.mode} data-category={g.id} data-search={`${n.title} ${n.author} ${g.title} ${n.summary||''}`}>
-                <NoteCover topic={n.coverTopic} motif={n.coverMotif} category={g.id} title={n.title} url={access.url} linkLabel={access.label} cover={n.cover}/>
+                <NoteCover title={n.title} url={access.url} linkLabel={access.label} cover={n.cover}/>
+                <div class="note-card-content">
                 <p class="note-meta">{n.author} <span aria-hidden="true">·</span> {evidenceLabel[n.evidence]}</p>
                 <h3><a href={access.url} rel="noopener noreferrer">{n.title}</a></h3>
                 {n.summary&&<p class="note-summary">{n.summary}</p>}
@@ -47,6 +48,7 @@ const directCount = groups.flatMap(g=>g.items).filter(n=>noteAccess(n.data).mode
                     <span class="creator-link-text">{access.label} <span aria-hidden="true">↗</span></span>
                   </a>
                   <a class="text-link note-search-link" href={access.search} rel="noopener noreferrer" aria-label={`在小红书搜索原题：${n.title}`}>搜原题</a>
+                </div>
                 </div>
               </article>
             );})}

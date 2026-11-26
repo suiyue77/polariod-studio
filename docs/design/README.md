@@ -9,3 +9,5 @@ Read [Wish interpretation](../wish/DESIGN.md) before navigation/product changes.
 ## Creator directory
 
 使用安静的单列名录：56px 圆形头像位、创作者名称、简短介绍，平台名称紧邻“访问主页”外链。平台从公开主页域名识别；无获许可的头像时使用姓名首字符，不将其描述为真实头像。保留窄屏换行、可见焦点和至少 44px 的链接点击高度。
+
+Feature-level goals and protected semantics: [Intent](../intent/README.md). This file retains its existing ownership and history.

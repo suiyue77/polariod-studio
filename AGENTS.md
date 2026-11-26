@@ -3,7 +3,7 @@
 - Current product intent: [Wish](docs/wish/LATEST.md); information architecture: [Wish Design](docs/wish/DESIGN.md).
 - Visual authority: [Design](docs/design/README.md) and `src/styles/global.css`.
 - Engineering/CI: [Dev](docs/dev/README.md), [Website Passport](docs/dev/WEBSITE_PASSPORT.md), `package.json` and the real deployment configuration.
-- Content rights: [CONTENT_PERMISSIONS.md](CONTENT_PERMISSIONS.md) (non-commercial learning, no sublicensing; individual source permission required).
+- Content rights: [CONTENT_PERMISSIONS.md](CONTENT_PERMISSIONS.md) (non-commercial learning, no sublicensing; confirmed permission may cover avatars, original note covers, images and text).
 - Content/source facts: `src/content.config.ts`, `src/content/` and permission fields.
 - Public reader: `/agent/`, `/agent/site.json`, `/llms.txt` relative to the site's base.
 

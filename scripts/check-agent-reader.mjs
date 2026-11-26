@@ -15,6 +15,14 @@ const approved=JSON.parse(fs.readFileSync('src/content/creators.json','utf8')).f
 assert.deepEqual(j.sections[1].items.map(c=>[c.title,c.url,c.description]),approved.map(c=>[c.name,c.url,c.description]));
 assert.equal(new Set(approved.map(c=>c.url)).size,approved.length);
 for(const c of approved)assert.ok(!new URL(c.url).search&&!new URL(c.url).hash);
+for(const c of approved){
+ if(!c.avatar)continue;
+ assert.match(c.avatar.src,/^\/images\/creators\/[a-z0-9][a-z0-9._-]*\.(webp|png|jpe?g|avif)$/i);
+ assert.ok(['owned','licensed'].includes(c.avatar.permission)&&c.avatar.credit);
+ assert.ok(fs.existsSync('public'+c.avatar.src),'approved avatar file must exist');
+ assert.ok(fs.existsSync(root+c.avatar.src.slice(1)),'approved avatar must be published');
+}
+
 
 assert.ok(!/PRIVATE KEY|github_pat_|ghp_[A-Za-z0-9]{25,}/.test(JSON.stringify(j)));
 console.log('Reader HTML, JSON, llms.txt, source and boundaries PASS');

@@ -49,7 +49,25 @@ const server=http.createServer((req,res)=>{
  assert.equal(await page.locator('.creator-card').count(),creators.length);
  const creatorLinks=await page.locator('.creator-card a').evaluateAll(els=>els.map(a=>a.getAttribute('href')));
  assert.deepEqual(creatorLinks,creators.map(c=>c.url));
- for(const c of creators) assert.ok(await page.locator('.creator-card h3').allTextContents().then(names=>names.includes(c.title)));
+ for(const c of creators) assert.ok(await page.locator('.creator-card h2').allTextContents().then(names=>names.includes(c.title)));
+ const approvedCreators=JSON.parse(fs.readFileSync('src/content/creators.json','utf8')).filter(c=>c.approved);
+ for(let i=0;i<creators.length;i++){
+  const c=creators[i];const card=page.locator('.creator-card').nth(i);
+  const a=card.locator('.creator-avatar');
+  const geometry=await a.evaluate(el=>{const r=el.getBoundingClientRect();return {w:r.width,h:r.height,radius:getComputedStyle(el).borderTopLeftRadius};});
+  assert.equal(geometry.w,56);assert.equal(geometry.h,56);assert.ok(geometry.radius==='50%'||parseFloat(geometry.radius)>=28);
+  assert.equal((await a.locator('span').innerText()).trim(),Array.from(c.title.trim())[0]);
+  assert.equal(await a.locator('img').count(),approvedCreators[i].avatar?1:0);
+  if(new URL(c.url).hostname.endsWith('xiaohongshu.com'))assert.equal(await card.locator('.creator-platform').innerText(),'小红书');
+  const link=card.locator('.creator-link');
+  assert.ok((await link.boundingBox()).height>=44);
+  assert.ok(await link.getAttribute('aria-label'));
+  assert.equal(await link.getAttribute('href'),c.url);
+  await link.focus();
+  assert.ok(await link.evaluate(el=>document.activeElement===el));
+ }
+ if(process.env.SCREENSHOT_DIR) await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-creators.png'),fullPage:true});
+
 
  await page.goto(base+'/learn/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.guide-topic').count(),3);

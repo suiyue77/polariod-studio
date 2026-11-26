@@ -20,7 +20,7 @@ const server=http.createServer((req,res)=>{
  const guideRoutes=JSON.parse(fs.readFileSync(path.join(root,'agent/site.json'),'utf8')).sections[0].items.map(g=>new URL(g.url).pathname);
  const routes=['/','/learn/',...guideRoutes,'/creators/','/gallery/','/404.html'];
  assert.equal(new Set(guideRoutes).size,guideRoutes.length);
- for(const id of ['metering','portrait-light','photo-diagnosis']) assert.ok(guideRoutes.includes('/learn/'+id+'/'));
+ for(const id of ['metering','portrait-light','photo-diagnosis','spot-metering']) assert.ok(guideRoutes.includes('/learn/'+id+'/'));
  let n=0;
  for(const [label,opts] of [['desktop',{viewport:{width:1440,height:900}}],['mobile',{viewport:{width:440,height:956},deviceScaleFactor:3,isMobile:true,hasTouch:true}]]){
  const context=await browser.newContext(opts);
@@ -48,7 +48,7 @@ const server=http.createServer((req,res)=>{
  assert.deepEqual([...listed].sort(),[...guideRoutes].sort());
  await page.locator('.guide-jumps a[href="#shooting"]').click();
  assert.equal(new URL(page.url()).hash,'#shooting');
- for(const id of ['flip-shooting','camera-care','metering','portrait-light','photo-diagnosis']){
+ for(const id of ['flip-shooting','camera-care','metering','portrait-light','photo-diagnosis','spot-metering']){
   await page.locator('.guide-card[href="/learn/'+id+'/"]').click();
   assert.ok(page.url().endsWith('/learn/'+id+'/'));
   assert.ok(await page.locator('.article-body h2').count()>=5);
@@ -66,6 +66,11 @@ const server=http.createServer((req,res)=>{
   }
   if(id==='portrait-light') assert.equal(await page.locator('.article-body img').count(),1);
   if(id==='photo-diagnosis') assert.equal(await page.locator('.article-body table').count(),1);
+  if(id==='spot-metering'){
+   assert.equal(await page.locator('.article-body table').count(),3);
+   assert.equal(await page.locator('.article-body a[href^="https://www.xiaohongshu.com/explore/"]').count(),4);
+   assert.ok(await page.locator('.article-body').innerText().then(t=>t.includes('不是 Polaroid 发布的相纸动态范围')&&t.includes('本站目前没有完成这组真实相纸对照')));
+  }
   if(process.env.SCREENSHOT_DIR && id==='metering'){
    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
    await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-metering-top.png')});

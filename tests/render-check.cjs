@@ -20,7 +20,8 @@ const server=http.createServer((req,res)=>{
  const reader=JSON.parse(fs.readFileSync(path.join(root,'agent/site.json'),'utf8'));
  const guideRoutes=reader.sections[0].items.map(g=>new URL(g.url).pathname);
  const creators=reader.sections[1].items;
- const routes=['/','/learn/',...guideRoutes,'/creators/','/gallery/','/404.html'];
+ const notes=reader.sections.find(s=>s.title==='精选笔记').items;
+ const routes=['/','/learn/',...guideRoutes,'/creators/','/notes/','/permissions/','/gallery/','/404.html'];
  assert.equal(new Set(guideRoutes).size,guideRoutes.length);
  for(const id of ['metering','portrait-light','photo-diagnosis','spot-metering']) assert.ok(guideRoutes.includes('/learn/'+id+'/'));
  let n=0;
@@ -38,7 +39,7 @@ const server=http.createServer((req,res)=>{
  await page.locator('img').evaluateAll(imgs=>Promise.all(imgs.map(async x=>{x.loading='eager';await x.decode();})));
  assert.ok(await page.locator('img').evaluateAll(imgs=>imgs.every(x=>x.complete&&x.naturalWidth>0)),label+' '+route+' broken images');
  assert.equal(layout.bodyColor,'rgb(247, 244, 237)',label+' '+route+' CSS');
- assert.equal(await page.locator('header nav a').count(),3);
+ assert.equal(await page.locator('header nav a').count(),4);
  n++;
  }
  await page.goto(base+'/',{waitUntil:'networkidle'});
@@ -81,6 +82,32 @@ const server=http.createServer((req,res)=>{
  }
  if(process.env.SCREENSHOT_DIR) await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-creators.png'),fullPage:true});
 
+
+ await page.goto(base+'/notes/',{waitUntil:'networkidle'});
+ assert.equal(await page.locator('.note-card').count(),notes.length);
+ assert.equal(await page.locator('.note-card:visible').count(),notes.length);
+ assert.equal(await page.locator('.note-card img').count(),0);
+ assert.deepEqual(await page.locator('.note-card .note-source').evaluateAll(els=>els.map(e=>e.getAttribute('href'))),notes.map(n=>n.url));
+ assert.ok(await page.locator('.note-card .note-search-link').evaluateAll(els=>els.every(e=>{const u=new URL(e.href);return u.hostname==='www.xiaohongshu.com'&&u.pathname==='/search_result'&&!!u.searchParams.get('keyword')&&[...u.searchParams.keys()].join(',')==='keyword'})));
+ assert.equal(await page.locator('.notes-topic').count(),4);
+ if(process.env.SCREENSHOT_DIR) await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-notes.png')});
+ await page.locator('.notes-filter button[data-topic="light"]').click();
+ assert.ok(await page.locator('.note-card:visible').count()>0);
+ assert.ok(await page.locator('.note-card:visible').evaluateAll(els=>els.every(e=>e.dataset.category==='light')));
+ await page.locator('.notes-filter button[data-topic="all"]').click();
+ await page.locator('#note-search').fill('Lightme');
+ assert.ok(await page.locator('.note-card:visible').count()>0);
+ assert.ok(await page.locator('.note-card:visible').evaluateAll(els=>els.every(e=>e.dataset.search.toLowerCase().includes('lightme'))));
+ await page.locator('#note-search').fill('zz_nonexistent_000');
+ assert.equal(await page.locator('.note-card:visible').count(),0);
+ assert.ok(await page.locator('.notes-empty').isVisible());
+ await page.locator('#note-search').fill('');
+ assert.equal(await page.locator('.note-card:visible').count(),notes.length);
+ await page.locator('footer a[href="/permissions/"]').click();
+ assert.ok(page.url().endsWith('/permissions/'));
+ assert.ok((await page.locator('h1').innerText()).includes('内容使用许可'));
+ assert.ok((await page.locator('article').innerText()).includes('不向其他网站'));
+ if(process.env.SCREENSHOT_DIR) await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-permissions.png')});
 
  await page.goto(base+'/learn/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.guide-topic').count(),3);

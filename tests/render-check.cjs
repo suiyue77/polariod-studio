@@ -17,7 +17,7 @@ const server=http.createServer((req,res)=>{
  const base='http://127.0.0.1:'+server.address().port;
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH});
  try{
- const routes=['/','/learn/','/learn/first-frame/','/learn/protect-from-light/','/learn/photo-notes/','/creators/','/gallery/','/404.html'];
+ const routes=['/','/learn/','/learn/first-frame/','/learn/protect-from-light/','/learn/photo-notes/','/learn/flip-shooting/','/learn/camera-care/','/creators/','/gallery/','/404.html'];
  let n=0;
  for(const [label,opts] of [['desktop',{viewport:{width:1440,height:900}}],['mobile',{viewport:{width:440,height:956},deviceScaleFactor:3,isMobile:true,hasTouch:true}]]){
  const context=await browser.newContext(opts);
@@ -36,6 +36,15 @@ const server=http.createServer((req,res)=>{
  assert.equal(await page.locator('nav a').count(),3);
  n++;
  }
+ await page.goto(base+'/learn/',{waitUntil:'networkidle'});
+ for(const id of ['flip-shooting','camera-care']){
+  await page.locator('a[href="/learn/'+id+'/"]').click();
+  assert.ok(page.url().endsWith('/learn/'+id+'/'));
+  assert.ok(await page.locator('.article-body h2').count()>=5);
+  assert.ok(await page.locator('.article-body a[href^="https://support.polaroid.com/"]').count()>=3);
+  await page.locator('a.text-link[href="/learn/"]').click();
+  assert.ok(page.url().endsWith('/learn/'));
+ }
  await page.goto(base+'/gallery/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.gallery-item:visible').count(),3);
  await page.getByRole('button',{name:'静物',exact:true}).click();
@@ -49,7 +58,7 @@ const server=http.createServer((req,res)=>{
  await page.getByRole('button',{name:'全部',exact:true}).click();
  assert.equal(await page.locator('.gallery-item:visible').count(),3);
  assert.deepEqual(failures,[],label+' browser errors');
- console.log(label+': 8 routes, no overflow or broken images, gallery filter/open/close PASS');
+ console.log(label+': '+routes.length+' routes, no overflow or broken images, gallery filter/open/close PASS');
  await context.close();
  }
  console.log('Total rendered route checks:',n);

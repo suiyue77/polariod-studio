@@ -86,7 +86,15 @@ const server=http.createServer((req,res)=>{
  await page.goto(base+'/notes/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.note-card').count(),notes.length);
  assert.equal(await page.locator('.note-card:visible').count(),notes.length);
- assert.equal(await page.locator('.note-card img').count(),0);
+ const noteRecords=JSON.parse(fs.readFileSync('src/content/reading-notes.json','utf8'));
+ const covers=page.locator('.note-cover');
+ assert.equal(await covers.count(),notes.length);
+ assert.equal(await page.locator('.note-cover[data-cover-kind="studio"] svg').count(),noteRecords.filter(n=>!n.cover).length);
+ assert.equal(await page.locator('.note-cover[data-cover-kind="source"] img').count(),noteRecords.filter(n=>n.cover).length);
+ assert.ok(await covers.evaluateAll(els=>els.every(e=>{const r=e.getBoundingClientRect();return r.width>100&&r.height>60&&e.getAttribute('aria-label')&&e.querySelector('.note-cover-credit')?.textContent?.trim()})));
+ assert.deepEqual(await covers.evaluateAll(els=>els.map(e=>e.getAttribute('href'))),notes.map(n=>n.url));
+ assert.equal(await page.locator('.notes-grid').first().evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length),label==='desktop'?3:1);
+
  assert.deepEqual(await page.locator('.note-card .note-source').evaluateAll(els=>els.map(e=>e.getAttribute('href'))),notes.map(n=>n.url));
  assert.ok(await page.locator('.note-card .note-search-link').evaluateAll(els=>els.every(e=>{const u=new URL(e.href);return u.hostname==='www.xiaohongshu.com'&&u.pathname==='/search_result'&&!!u.searchParams.get('keyword')&&[...u.searchParams.keys()].join(',')==='keyword'})));
  assert.equal(await page.locator('.notes-topic').count(),4);

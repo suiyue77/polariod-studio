@@ -5,7 +5,9 @@
     "author": "关关雎鸠",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/6a6747ed000000001101a92f",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "Flip 使用经验",
+    "coverMotif": "camera"
   },
   {
     "id": "6a4daf76000000000701199a",
@@ -13,7 +15,9 @@
     "author": "三扣优子",
     "category": "light",
     "url": "https://www.xiaohongshu.com/explore/6a4daf76000000000701199a",
-    "evidence": "topic-verified"
+    "evidence": "topic-verified",
+    "coverTopic": "曝光与光比",
+    "coverMotif": "light"
   },
   {
     "id": "6a4b7ba2000000001702d8b5",
@@ -21,7 +25,9 @@
     "author": "Dior-",
     "category": "film",
     "url": "https://www.xiaohongshu.com/explore/6a4b7ba2000000001702d8b5",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "过期相纸",
+    "coverMotif": "film"
   },
   {
     "id": "69c12bc5000000001b0029d5",
@@ -29,7 +35,9 @@
     "author": "冰橙汁",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/69c12bc5000000001b0029d5",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "油画般色彩",
+    "coverMotif": "color"
   },
   {
     "id": "6a4a7be10000000022017960",
@@ -37,7 +45,9 @@
     "author": "Molleeeee",
     "category": "light",
     "url": "https://www.xiaohongshu.com/explore/6a4a7be10000000022017960",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "I-2 测光原理",
+    "coverMotif": "meter"
   },
   {
     "id": "68f2f825000000000302116d",
@@ -46,7 +56,9 @@
     "category": "light",
     "url": "https://www.xiaohongshu.com/explore/68f2f825000000000302116d",
     "evidence": "body-reviewed",
-    "summary": "参考多区域点测光与场景反差的个人经验，不能作为相纸宽容度的统一标定。"
+    "summary": "参考多区域点测光与场景反差的个人经验，不能作为相纸宽容度的统一标定。",
+    "coverTopic": "多区域点测光",
+    "coverMotif": "meter"
   },
   {
     "id": "68f8c54d00000000040103ef",
@@ -54,7 +66,9 @@
     "author": "Rainwwwwwei",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/68f8c54d00000000040103ef",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "稳定出片",
+    "coverMotif": "check"
   },
   {
     "id": "69f16be7000000002202b4a2",
@@ -62,7 +76,9 @@
     "author": "泷谷新次（12月北京）",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/69f16be7000000002202b4a2",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "春日重曝",
+    "coverMotif": "double"
   },
   {
     "id": "6a0c339a000000000803e1af",
@@ -70,7 +86,9 @@
     "author": "纯纯子真的不会拍照呀",
     "category": "light",
     "url": "https://www.xiaohongshu.com/explore/6a0c339a000000000803e1af",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "测光与双曝",
+    "coverMotif": "double"
   },
   {
     "id": "68bddc2f000000001d02ff7d",
@@ -78,7 +96,9 @@
     "author": "Wayne",
     "category": "light",
     "url": "https://www.xiaohongshu.com/explore/68bddc2f000000001d02ff7d",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "Lightme 测光",
+    "coverMotif": "meter"
   },
   {
     "id": "6a35379d000000001700848d",
@@ -86,7 +106,9 @@
     "author": "灵机一动的天才",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/6a35379d000000001700848d",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "旅行记录",
+    "coverMotif": "landscape"
   },
   {
     "id": "6a17cad90000000035038dbe",
@@ -94,7 +116,9 @@
     "author": "OooOhmyPolaroid",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/6a17cad90000000035038dbe",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "35mm 镜头",
+    "coverMotif": "lens"
   },
   {
     "id": "6a0ed2a40000000006031694",
@@ -102,7 +126,9 @@
     "author": "纯纯子真的不会拍照呀",
     "category": "film",
     "url": "https://www.xiaohongshu.com/explore/6a0ed2a40000000006031694",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "相纸偏色",
+    "coverMotif": "color"
   },
   {
     "id": "6a0058050000000007011664",
@@ -110,7 +136,9 @@
     "author": "三米_",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/6a0058050000000007011664",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "拍摄教程",
+    "coverMotif": "camera"
   },
   {
     "id": "69ee157d000000003601a882",
@@ -118,7 +146,9 @@
     "author": "Mr.Grumpy📸",
     "category": "light",
     "url": "https://www.xiaohongshu.com/explore/69ee157d000000003601a882",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "成像原理",
+    "coverMotif": "lens"
   },
   {
     "id": "69e337fa000000001a027999",
@@ -126,7 +156,9 @@
     "author": "Mnesilochus",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/69e337fa000000001a027999",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "色彩表现",
+    "coverMotif": "color"
   },
   {
     "id": "69d7926b000000002101107f",
@@ -134,7 +166,9 @@
     "author": "段囍庆",
     "category": "light",
     "url": "https://www.xiaohongshu.com/explore/69d7926b000000002101107f",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "自然光与补偿",
+    "coverMotif": "light"
   },
   {
     "id": "69db1d6a0000000023015044",
@@ -142,7 +176,9 @@
     "author": "Sociolog摄胶场所",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/69db1d6a0000000023015044",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "即时与胶片",
+    "coverMotif": "film"
   },
   {
     "id": "69d250660000000023012217",
@@ -150,7 +186,9 @@
     "author": "西林nuc",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/69d250660000000023012217",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "岛屿影像",
+    "coverMotif": "landscape"
   },
   {
     "id": "69db51940000000023004327",
@@ -158,7 +196,9 @@
     "author": "vesper",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/69db51940000000023004327",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "即时影像",
+    "coverMotif": "print"
   },
   {
     "id": "69db4730000000002003a395",
@@ -166,7 +206,9 @@
     "author": "一米九四",
     "category": "film",
     "url": "https://www.xiaohongshu.com/explore/69db4730000000002003a395",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "彩框相纸",
+    "coverMotif": "film"
   },
   {
     "id": "69d3bc11000000001d01cc7f",
@@ -174,7 +216,9 @@
     "author": "鹿井屿渔",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/69d3bc11000000001d01cc7f",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "春日影像",
+    "coverMotif": "flower"
   },
   {
     "id": "69c7f5060000000021004a7e",
@@ -182,7 +226,9 @@
     "author": "bilibalibon",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/69c7f5060000000021004a7e",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "人像机型对比",
+    "coverMotif": "portrait"
   },
   {
     "id": "69b6e928000000001a02117c",
@@ -191,7 +237,9 @@
     "category": "light",
     "url": "https://www.xiaohongshu.com/explore/69b6e928000000001a02117c",
     "evidence": "body-reviewed",
-    "summary": "Flip 新手对测光软件、感光度及相机参数选择的求助。"
+    "summary": "Flip 新手对测光软件、感光度及相机参数选择的求助。",
+    "coverTopic": "Lightme 使用",
+    "coverMotif": "meter"
   },
   {
     "id": "69ac42a70000000022021c4d",
@@ -199,7 +247,9 @@
     "author": "-硕果子",
     "category": "film",
     "url": "https://www.xiaohongshu.com/explore/69ac42a70000000022021c4d",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "相纸控温",
+    "coverMotif": "temperature"
   },
   {
     "id": "690b1854000000000303b794",
@@ -207,7 +257,9 @@
     "author": "JuunnW",
     "category": "film",
     "url": "https://www.xiaohongshu.com/explore/690b1854000000000303b794",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "红色色偏",
+    "coverMotif": "color"
   },
   {
     "id": "686df4f8000000001203db7e",
@@ -215,7 +267,9 @@
     "author": "yorin",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/686df4f8000000001203db7e",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "建筑视角",
+    "coverMotif": "architecture"
   },
   {
     "id": "6859760c000000002400c351",
@@ -223,7 +277,9 @@
     "author": "rock",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/6859760c000000002400c351",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "企鹅影像",
+    "coverMotif": "print"
   },
   {
     "id": "68526bc1000000002400b56c",
@@ -231,7 +287,9 @@
     "author": "鱼豆书",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/68526bc1000000002400b56c",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "相片随身展示",
+    "coverMotif": "print"
   },
   {
     "id": "683d8c8c000000000f039e25",
@@ -239,7 +297,9 @@
     "author": "OH MALL",
     "category": "film",
     "url": "https://www.xiaohongshu.com/explore/683d8c8c000000000f039e25",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "MoMA 限量相纸",
+    "coverMotif": "film"
   },
   {
     "id": "684bc676000000002101889f",
@@ -247,7 +307,9 @@
     "author": "来一杯橙汁儿",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/684bc676000000002101889f",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "双重曝光",
+    "coverMotif": "double"
   },
   {
     "id": "681f72ec000000000c0388cf",
@@ -255,7 +317,9 @@
     "author": "动物园园长",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/681f72ec000000000c0388cf",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "配件与装备",
+    "coverMotif": "camera"
   },
   {
     "id": "684af2d7000000002100b112",
@@ -263,7 +327,9 @@
     "author": "巴黎摄影师 猴子🐒大哥哥",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/684af2d7000000002100b112",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "Flip 体验",
+    "coverMotif": "camera"
   },
   {
     "id": "684edefc00000000210073c4",
@@ -271,7 +337,9 @@
     "author": "汤力猫",
     "category": "film",
     "url": "https://www.xiaohongshu.com/explore/684edefc00000000210073c4",
-    "evidence": "topic-verified"
+    "evidence": "topic-verified",
+    "coverTopic": "MoMA 相纸",
+    "coverMotif": "film"
   },
   {
     "id": "684c2d4e000000000c03a217",
@@ -279,7 +347,9 @@
     "author": "詹姆士两千型🥕",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/684c2d4e000000000c03a217",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "拍摄错题本",
+    "coverMotif": "check"
   },
   {
     "id": "68401fb4000000002300d194",
@@ -287,7 +357,9 @@
     "author": "yys木易小椰",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/68401fb4000000002300d194",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "拍摄参数记录",
+    "coverMotif": "check"
   },
   {
     "id": "683f9893000000002202f5d3",
@@ -295,7 +367,9 @@
     "author": "小柯阿-",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/683f9893000000002202f5d3",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "即时摄影",
+    "coverMotif": "print"
   },
   {
     "id": "6815d825000000002001e0aa",
@@ -303,7 +377,9 @@
     "author": "FEi",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/6815d825000000002001e0aa",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "演出记录",
+    "coverMotif": "music"
   },
   {
     "id": "6627678a000000001c00a94f",
@@ -311,7 +387,9 @@
     "author": "归壹呀",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/6627678a000000001c00a94f",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "记忆与相纸",
+    "coverMotif": "print"
   },
   {
     "id": "683bdd3f000000002102dac6",
@@ -319,7 +397,9 @@
     "author": "_貓貓熊_",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/683bdd3f000000002102dac6",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "节日记录",
+    "coverMotif": "camera"
   },
   {
     "id": "681dd599000000002100d89e",
@@ -327,7 +407,9 @@
     "author": "Kiki",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/681dd599000000002100d89e",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "出片经验",
+    "coverMotif": "check"
   },
   {
     "id": "681c2baa000000002301391a",
@@ -335,7 +417,9 @@
     "author": "散步了豆豆🥕",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/681c2baa000000002301391a",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "蔷薇双曝",
+    "coverMotif": "flower"
   },
   {
     "id": "68380daa0000000023011e15",
@@ -343,7 +427,9 @@
     "author": "嘎嘎嘎嘎啦德",
     "category": "film",
     "url": "https://www.xiaohongshu.com/explore/68380daa0000000023011e15",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "限量相纸",
+    "coverMotif": "film"
   },
   {
     "id": "683608050000000023011e75",
@@ -351,7 +437,9 @@
     "author": "tian_fotografie",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/683608050000000023011e75",
-    "evidence": "topic-verified"
+    "evidence": "topic-verified",
+    "coverTopic": "摄影与创作",
+    "coverMotif": "print"
   },
   {
     "id": "681f71740000000022004472",
@@ -359,7 +447,9 @@
     "author": "泷谷新次（12月北京）",
     "category": "creative",
     "url": "https://www.xiaohongshu.com/explore/681f71740000000022004472",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "Polaroid 创作",
+    "coverMotif": "print"
   },
   {
     "id": "669f30e8000000002701df04",
@@ -367,7 +457,9 @@
     "author": "mojo",
     "category": "practice",
     "url": "https://www.xiaohongshu.com/explore/669f30e8000000002701df04",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "Go 2 拍摄",
+    "coverMotif": "camera"
   },
   {
     "id": "67a02d90000000001800425b",
@@ -375,6 +467,8 @@
     "author": "会拍照的北京大叔(可约拍)",
     "category": "film",
     "url": "https://www.xiaohongshu.com/explore/67a02d90000000001800425b",
-    "evidence": "title-only"
+    "evidence": "title-only",
+    "coverTopic": "相纸与 X 光",
+    "coverMotif": "film"
   }
 ]

@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const http = require('node:http');
 const { chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright');
-const root = path.resolve('dist');
+const root = path.resolve(process.env.RENDER_DIST || 'dist');
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.txt':'text/plain; charset=utf-8'};
 const server=http.createServer((req,res)=>{
  let f=path.join(root,decodeURIComponent(new URL(req.url,'http://localhost').pathname));
@@ -12,6 +12,67 @@ const server=http.createServer((req,res)=>{
  if(!fs.existsSync(f)){res.writeHead(404);res.end('missing');return;}
  res.writeHead(200,{'Content-Type':mime[path.extname(f)]||'application/octet-stream'});fs.createReadStream(f).pipe(res);
 });
+async function checkFraming({base,page,browser,opts,label}){
+ await page.goto(base+'/learn/',{waitUntil:'networkidle'});
+ await page.locator('.guide-card[href="/learn/framing-viewfinder/"]').click();
+ assert.ok(page.url().endsWith('/learn/framing-viewfinder/'));
+ const fv=page.locator('[data-framing-viewfinder]');
+ const val=k=>fv.locator('[data-fv-'+k+']');
+ await fv.locator('[data-fv-controls]:not([disabled])').waitFor();
+ assert.equal(await val('selected').innerText(),'1.48');
+ assert.equal(await val('aspect').inputValue(),'square');
+ const initialWidth=await fv.locator('[data-fv-box="target"]').getAttribute('width');
+ if(label==='mobile') await fv.getByText('I-2',{exact:true}).tap();
+ else await fv.getByText('I-2',{exact:true}).click();
+ assert.equal(await val('selected').innerText(),'1.36');
+ assert.notEqual(await fv.locator('[data-fv-box="target"]').getAttribute('width'),initialWidth);
+ await fv.getByText('SX-70',{exact:true}).click();
+ assert.equal(await val('selected').innerText(),'1.61');
+ await val('device').selectOption('sony');
+ assert.equal(await val('selected').innerText(),'23.05');
+ await val('aspect').selectOption('native');
+ assert.equal(await val('selected').innerText(),'22.76');
+ assert.ok(await val('match-note').innerText().then(x=>x.includes('矩形')));
+ await val('match').selectOption('horizontal');
+ assert.equal(await val('selected').innerText(),'35.10');
+ await val('unit').selectOption('cm');
+ assert.equal(await val('distance').inputValue(),'100');
+ await val('distance').fill('26.3');
+ assert.ok((await val('focus').innerText()).includes('太近'));
+ assert.ok((await val('focus').innerText()).includes('26.4 cm'));
+ await val('distance').fill('26.4');
+ assert.ok((await val('focus').innerText()).includes('标称'));
+ await fv.getByText('Flip',{exact:true}).click();
+ for(const [d,word] of [['39.9','太近'],['40','特写'],['77','近景'],['103','中景'],['168','远景']]){
+  await val('distance').fill(d);assert.ok((await val('focus').innerText()).includes(word),d);
+ }
+ await val('distance').fill('bad');
+ assert.ok(await val('error').isVisible());assert.ok(!(await val('results').isVisible()));
+ await val('far').check();assert.ok((await val('size').innerText()).includes('无限远'));assert.ok(await val('distance').isDisabled());
+ await val('far').uncheck();await val('distance').fill('100');
+ await val('unit').selectOption('m');
+ assert.equal(await val('distance').inputValue(),'1');
+ await val('device').selectOption('phone');await val('aspect').selectOption('square');await val('match').selectOption('recommended');
+ assert.equal(await val('selected').innerText(),'1.48');
+ await fv.locator('input[name="fv-camera"][value="flip"]').focus();await page.keyboard.press('ArrowRight');
+ assert.equal(await fv.locator('input[name="fv-camera"]:checked').inputValue(),'i2');
+ assert.equal(await val('selected').innerText(),'1.36');
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth+1));
+ assert.ok(await page.locator('.article-body a[href="/learn/flip-shooting/"]').isVisible());
+ if(process.env.SCREENSHOT_DIR){await fv.scrollIntoViewIfNeeded();await fv.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-framing.png')});}
+ console.log(label+': framing controls / mode / threshold / invalid / infinity / keyboard PASS');
+ await page.goto(base+'/learn/flip-shooting/',{waitUntil:'networkidle'});
+ assert.ok(await page.locator('.article-body a[href="/learn/framing-viewfinder/"]').isVisible());
+ const staticContext=await browser.newContext({...opts,javaScriptEnabled:false});
+ try{
+  const staticPage=await staticContext.newPage();
+  await staticPage.goto(base+'/learn/framing-viewfinder/');
+  assert.ok(await staticPage.locator('.fv-static').isVisible());
+  assert.ok(await staticPage.locator('[data-fv-controls]').evaluate(el=>el.disabled));
+  assert.ok(await staticPage.locator('[data-fv-device]').isDisabled());
+ }finally{await staticContext.close();}
+
+}
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const base='http://127.0.0.1:'+server.address().port;
@@ -30,6 +91,11 @@ const server=http.createServer((req,res)=>{
  const page=await context.newPage();
  const failures=[];
  page.on('pageerror',e=>failures.push(e.message));page.on('response',r=>{if(r.status()>=400)failures.push(r.status()+' '+r.url());});
+ if(process.env.FRAMING_ONLY==='1'){
+  await checkFraming({base,page,browser,opts,label});
+  assert.deepEqual(failures,[],label+' framing browser errors');
+  await context.close();continue;
+ }
  for(const route of routes){
  await page.goto(base+route,{waitUntil:'networkidle'});
  assert.equal(await page.locator('h1').count(),1,label+' '+route+' H1');
@@ -169,61 +235,7 @@ const server=http.createServer((req,res)=>{
   assert.ok(page.url().endsWith('/learn/'));
  }
  if(process.env.SCREENSHOT_DIR) await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-learn.png')});
- await page.goto(base+'/learn/',{waitUntil:'networkidle'});
- await page.locator('.guide-card[href="/learn/framing-viewfinder/"]').click();
- assert.ok(page.url().endsWith('/learn/framing-viewfinder/'));
- const fv=page.locator('[data-framing-viewfinder]');
- const val=k=>fv.locator('[data-fv-'+k+']');
- await fv.locator('[data-fv-controls]:not([disabled])').waitFor();
- assert.equal(await val('selected').innerText(),'1.48');
- assert.equal(await val('aspect').inputValue(),'square');
- const initialWidth=await fv.locator('[data-fv-box="target"]').getAttribute('width');
- await fv.getByText('I-2',{exact:true}).click();
- assert.equal(await val('selected').innerText(),'1.36');
- assert.notEqual(await fv.locator('[data-fv-box="target"]').getAttribute('width'),initialWidth);
- await fv.getByText('SX-70',{exact:true}).click();
- assert.equal(await val('selected').innerText(),'1.61');
- await val('device').selectOption('sony');
- assert.equal(await val('selected').innerText(),'23.05');
- await val('aspect').selectOption('native');
- assert.equal(await val('selected').innerText(),'22.76');
- assert.ok(await val('match-note').innerText().then(x=>x.includes('矩形')));
- await val('match').selectOption('horizontal');
- assert.equal(await val('selected').innerText(),'35.10');
- await val('unit').selectOption('cm');
- assert.equal(await val('distance').inputValue(),'100');
- await val('distance').fill('26.3');
- assert.ok((await val('focus').innerText()).includes('太近'));
- await val('distance').fill('26.4');
- assert.ok((await val('focus').innerText()).includes('标称'));
- await fv.getByText('Flip',{exact:true}).click();
- for(const [d,word] of [['39.9','太近'],['40','特写'],['77','近景'],['103','中景'],['168','远景']]){
-  await val('distance').fill(d);assert.ok((await val('focus').innerText()).includes(word),d);
- }
- await val('distance').fill('bad');
- assert.ok(await val('error').isVisible());assert.ok(!(await val('results').isVisible()));
- await val('far').check();assert.ok((await val('size').innerText()).includes('无限远'));assert.ok(await val('distance').isDisabled());
- await val('far').uncheck();await val('distance').fill('100');
- await val('unit').selectOption('m');
- assert.equal(await val('distance').inputValue(),'1');
- await val('device').selectOption('phone');await val('aspect').selectOption('square');await val('match').selectOption('recommended');
- assert.equal(await val('selected').innerText(),'1.48');
- await fv.locator('input[name="fv-camera"][value="flip"]').focus();await page.keyboard.press('ArrowRight');
- assert.equal(await fv.locator('input[name="fv-camera"]:checked').inputValue(),'i2');
- assert.equal(await val('selected').innerText(),'1.36');
- assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth+1));
- assert.ok(await page.locator('.article-body a[href="/learn/flip-shooting/"]').isVisible());
- if(process.env.SCREENSHOT_DIR){await fv.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,label+'-framing.png')});}
- console.log(label+': framing controls / mode / threshold / invalid / infinity / keyboard PASS');
- await page.goto(base+'/learn/flip-shooting/',{waitUntil:'networkidle'});
- assert.ok(await page.locator('.article-body a[href="/learn/framing-viewfinder/"]').isVisible());
- const staticContext=await browser.newContext({...opts,javaScriptEnabled:false});
- try{
-  const staticPage=await staticContext.newPage();
-  await staticPage.goto(base+'/learn/framing-viewfinder/');
-  assert.ok(await staticPage.locator('.fv-static').isVisible());
-  assert.ok(await staticPage.locator('[data-fv-controls]').isDisabled());
- }finally{await staticContext.close();}
+ await checkFraming({base,page,browser,opts,label});
 
  await page.goto(base+'/gallery/',{waitUntil:'networkidle'});
  assert.equal(await page.locator('.gallery-item:visible').count(),3);

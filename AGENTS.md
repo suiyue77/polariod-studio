@@ -4,6 +4,7 @@
 - Visual authority: [Design](docs/design/README.md) and `src/styles/global.css`.
 - Engineering/CI: [Dev](docs/dev/README.md), [Website Passport](docs/dev/WEBSITE_PASSPORT.md), `package.json` and the real deployment configuration.
 - Content rights: [CONTENT_PERMISSIONS.md](CONTENT_PERMISSIONS.md) (non-commercial learning, no sublicensing; confirmed permission may cover avatars, original note covers, images and text).
+- 小红书资料研究、笔记保存和来源验收：先读 [XIAOHONGSHU SOP](docs/dev/XIAOHONGSHU_SOP.md)，只在明确授权范围内读取和发布。
 - Content/source facts: `src/content.config.ts`, `src/content/` and permission fields.
 - Public reader: `/agent/`, `/agent/site.json`, `/llms.txt` relative to the site's base.
 

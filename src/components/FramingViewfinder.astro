@@ -1,0 +1,143 @@
+---
+import {cameras, devices, zones, film, sources, calculate, diagram} from '../lib/framing.mjs';
+const initial=calculate();
+const boxes=diagram(initial);
+const fmt=(n:number)=>n.toFixed(2);
+---
+<section class="fv" data-framing-viewfinder aria-label="宝丽来构图模拟器">
+  <div class="fv-kicker">FIELD TOOL / 理论构图</div>
+  <fieldset data-fv-controls disabled>
+    <legend>选择要模拟的相机</legend>
+    <div class="fv-cameras">
+      {Object.entries(cameras).map(([id,c])=><label class="fv-choice"><input type="radio" name="fv-camera" value={id} checked={id==='flip'}/><span>{c.name}</span></label>)}
+    </div>
+    <div class="fv-controls">
+      <label>参照设备<select data-fv-device><option value="phone">iPhone 18 Pro Max</option><option value="sony">Sony α6700</option></select></label>
+      <label>预览画幅<select data-fv-aspect><option value="square">1:1 方形裁切</option><option value="native">4:3 原始画幅</option></select></label>
+      <div class="fv-field"><span>拍摄距离</span><div class="fv-distance"><input data-fv-distance type="text" inputmode="decimal" value="1" aria-label="拍摄距离" autocomplete="off"/><select data-fv-unit aria-label="距离单位"><option value="m">米</option><option value="cm">厘米</option></select></div></div>
+      <label>取景匹配<select data-fv-match><option value="recommended">推荐</option><option value="horizontal">水平边缘</option><option value="vertical">垂直边缘</option></select></label>
+    </div>
+    <label class="fv-far"><input data-fv-far type="checkbox"/> 无限远（只比较视角）</label>
+  </fieldset>
+  <noscript><div class="fv-muted">JavaScript 未启用：以下为 Flip / iPhone 方形 / 1 m 的静态示例，后文仍可阅读。</div></noscript>
+  <div data-fv-error role="alert" class="fv-error" hidden>请输入大于零且不超过 1,000,000 米的有限距离，或勾选无限远。</div>
+  <div data-fv-results aria-live="polite" aria-atomic="true">
+    <div class="fv-output">
+      <div><div class="fv-kicker" data-fv-device-name>{initial.device.name} · 1:1</div><div class="fv-value"><span data-fv-selected>{fmt(initial.selected)}</span><small data-fv-unit-label>×</small></div><div data-fv-mm class="fv-muted">约 {fmt(initial.focal)} mm 等效焦距设置 · 手机可先用 {initial.selected.toFixed(1)}×</div></div>
+      <div><div class="fv-kicker">成片范围（宽 × 高）</div><div class="fv-size" data-fv-size>{Math.round(initial.width!*100)} × {Math.round(initial.height!*100)} cm</div><div data-fv-focus class="fv-focus">在标称对焦范围内 · {initial.zone?.label} / 最佳 {initial.zone?.best} m</div></div>
+    </div>
+    <div class="fv-axes"><span>水平匹配 <b data-fv-h>{fmt(initial.horizontal)}×</b></span><span>垂直匹配 <b data-fv-v>{fmt(initial.vertical)}×</b></span></div>
+    <div class="fv-muted" data-fv-match-note>方形推荐使用水平、垂直匹配的几何平均值；两者不会同时完全相等。</div>
+    <figure class="fv-diagram">
+      <svg viewBox="0 0 400 280" role="img" aria-label="同一站位的原始画框、数字参照取景画框和宝丽来成片画框">
+        <defs><pattern id="fv-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#c9c4b8" stroke-width=".6"/></pattern></defs>
+        <rect x="0" y="0" width="400" height="280" fill="#e9e3d8"/>
+        <rect x="0" y="0" width="400" height="280" fill="url(#fv-grid)"/>
+        <path d="M0 197 L87 88 L145 148 L208 70 L340 174 L400 119 V280 H0Z" fill="#b4bcb0"/>
+        <path d="M0 218 Q105 170 200 216 T400 195 V280H0Z" fill="#919d86"/>
+        <circle cx="311" cy="54" r="16" fill="#e6c383"/>
+        <circle cx="200" cy="113" r="12" fill="#735d47"/><path d="M186 129 Q200 118 214 129 L219 181 H181Z" fill="#465960"/>
+        <path d="M187 181 L182 215 M213 181 L219 215" stroke="#465960" stroke-width="8" stroke-linecap="round"/>
+        <g stroke-width="2" fill="none">
+          <rect data-fv-box="base" {...boxes.base} stroke="#514d43" stroke-dasharray="6 5"/>
+          <rect data-fv-box="match" {...boxes.match} stroke="#205b67" stroke-dasharray="3 3"/>
+          <rect data-fv-box="target" {...boxes.target} stroke="#a0432e" stroke-width="2.5"/>
+        </g>
+        <path d="M193 140H207M200 133V147" stroke="#292824" stroke-width="1.5"/>
+      </svg>
+      <figcaption class="fv-legend"><span><i class="fv-key fv-base"></i><span data-fv-base-label>参照 1×</span></span><span><i class="fv-key fv-match"></i>计算后的数字画框</span><span><i class="fv-key fv-target"></i>宝丽来成片</span></figcaption>
+    </figure>
+    <div class="fv-muted" data-fv-warning>{initial.nearWarning} 固定视角近似；近摄误差未经真机标定。</div>
+  </div>
+</section>
+<div class="fv-static">
+  <h3>快速查表 · 方形裁切</h3>
+  <div class="fv-table-wrap"><table>
+    <thead><tr><th>机型</th><th>iPhone 推荐 ×</th><th>Sony 实际 mm</th><th>最近对焦</th></tr></thead>
+    <tbody>{Object.entries(cameras).map(([id,c])=><tr><th scope="row">{c.name}</th><td>{fmt(calculate(id).recommended)}</td><td>{fmt(calculate(id,'sony').recommended)}</td><td>{Number((c.min*100).toFixed(1))} cm</td></tr>)}</tbody>
+  </table></div>
+  <h3>光学规格与计算依据</h3>
+  <div class="fv-table-wrap"><table>
+    <thead><tr><th>机型</th><th>实际镜头焦距</th><th>水平 / 垂直</th><th>对角等效</th></tr></thead>
+    <tbody>{Object.entries(cameras).map(([id,c])=><tr><th scope="row"><a href={c.source}>{c.name}</a></th><td>{id==='flip'?`${zones[0].focal}–${zones[3].focal} mm`:`${c.focal} mm`}</td><td>{c.h.toFixed(1)}° / {c.v.toFixed(1)}°<br/>{c.basis}</td><td>{calculate(id).equivalent.toFixed(1)} mm</td></tr>)}</tbody>
+  </table></div>
+  <h3>Flip 四个对焦区间（官方）</h3>
+  <div class="fv-table-wrap"><table>
+    <thead><tr><th>焦区</th><th>距离（m）</th><th>最佳（m）</th><th>实际 mm</th></tr></thead>
+    <tbody>{zones.map(z=><tr><th scope="row">{z.label}</th><td>{z.min}–{z.max===Infinity?'∞':z.max}</td><td>{z.best}</td><td>{z.focal}</td></tr>)}</tbody>
+  </table></div>
+  <div class="fv-muted">有效成像区域 <a href={film.source}>{film.width} × {film.height} mm（宽 × 高）</a>；iPhone <a href={sources.phone}>官方规格</a>；Sony <a href={sources.sony}>官方规格</a>。除明确标注的厂商规格外，换算结果均为理论值。</div>
+</div>
+<script>
+  import {calculate, diagram, parseDistance, devices} from '../lib/framing.mjs';
+  document.querySelectorAll<HTMLElement>('[data-framing-viewfinder]').forEach(root=>{
+    const controls=root.querySelector<HTMLFieldSetElement>('[data-fv-controls]')!;
+    const device=root.querySelector<HTMLSelectElement>('[data-fv-device]')!;
+    const aspect=root.querySelector<HTMLSelectElement>('[data-fv-aspect]')!;
+    const distance=root.querySelector<HTMLInputElement>('[data-fv-distance]')!;
+    const unit=root.querySelector<HTMLSelectElement>('[data-fv-unit]')!;
+    const far=root.querySelector<HTMLInputElement>('[data-fv-far]')!;
+    const match=root.querySelector<HTMLSelectElement>('[data-fv-match]')!;
+    const results=root.querySelector<HTMLElement>('[data-fv-results]')!;
+    const error=root.querySelector<HTMLElement>('[data-fv-error]')!;
+    let oldUnit=unit.value;
+    const put=(key:string,value:string)=>{root.querySelector<HTMLElement>('[data-fv-'+key+']')!.textContent=value;};
+    function update(){
+      aspect.options[1].text=devices[device.value as keyof typeof devices].full+' 原始画幅';
+      distance.disabled=far.checked;unit.disabled=far.checked;
+      const d=parseDistance(distance.value,unit.value,far.checked);
+      error.hidden=d!==null;results.hidden=d===null;
+      distance.setAttribute('aria-invalid',String(d===null));
+      if(d===null)return;
+      const id=root.querySelector<HTMLInputElement>('input[name="fv-camera"]:checked')!.value;
+      const r=calculate(id,device.value,aspect.value,d,match.value);
+      const suffix=r.device.unit, fmt=(v:number)=>v.toFixed(2);
+      put('device-name',r.device.name+' · '+(aspect.value==='square'?'1:1':r.device.full));
+      put('selected',fmt(r.selected));put('unit-label',suffix);
+      put('mm',device.value==='phone'?'约 '+fmt(r.focal)+' mm 等效焦距设置 · 手机可先用 '+r.selected.toFixed(1)+'×':'镜头标注的实际焦距；不乘 APS-C 裁切系数');
+      put('size',r.far?'无限远 · 不计算线性尺寸':Math.round(r.width!*100)+' × '+Math.round(r.height!*100)+' cm');
+      put('h',fmt(r.horizontal)+suffix);put('v',fmt(r.vertical)+suffix);
+      const status=root.querySelector<HTMLElement>('[data-fv-focus]')!;
+      status.dataset.valid=String(r.focusOK);
+      put('focus',r.focusOK?(r.zone?'标称范围内 · '+r.zone.label+' / 最佳 '+r.zone.best+' m':'在标称对焦范围内'):'太近：最近对焦 '+Number((r.camera.min*100).toFixed(1))+' cm');
+      put('match-note',aspect.value==='square'?'方形推荐使用水平、垂直匹配的几何平均值；两者不会同时完全相等。':'矩形推荐保留完整宝丽来画面，周围可能有额外内容；水平与垂直无法同时吻合。');
+      put('base-label',device.value==='phone'?'参照 1×':'参照 16 mm');
+      put('warning',[r.nearWarning,'固定视角近似；近摄误差未经真机标定。'].filter(Boolean).join(' '));
+      const boxes=diagram(r);
+      for(const [key,rect] of Object.entries(boxes)){
+        const node=root.querySelector('[data-fv-box="'+key+'"]')!;
+        for(const [attr,val] of Object.entries(rect))node.setAttribute(attr,String(val));
+      }
+    }
+    unit.addEventListener('change',()=>{
+      const previous=parseDistance(distance.value,oldUnit);
+      if(previous!==null&&Number.isFinite(previous))distance.value=String(Number((previous*(unit.value==='cm'?100:1)).toPrecision(12)));
+      oldUnit=unit.value;
+    });
+    controls.addEventListener('input',event=>{if(event.target===unit)return;update();});
+    controls.addEventListener('change',update);
+    controls.disabled=false;update();
+  });
+</script>
+<style>
+  .fv{background:#fffdf7;border:1px solid var(--color-rule);padding:clamp(14px,3vw,24px);margin:20px 0 28px;line-height:1.5;min-width:0}
+  .fv-kicker{font-size:12px;font-weight:650;letter-spacing:.08em;color:var(--color-muted);line-height:1.45}
+  .fv fieldset{border:0;margin:12px 0 0;padding:0;min-width:0}.fv legend{font-size:15px;font-weight:650;margin-bottom:8px}
+  .fv-cameras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .fv-choice{position:relative;display:block;cursor:pointer}.fv-choice input{position:absolute;opacity:0;width:1px;height:1px}
+  .fv-choice span{min-height:44px;display:grid;place-items:center;border:1px solid var(--color-rule);font-weight:650;font-size:16px}
+  .fv-choice input:checked+span{background:var(--color-ink);border-color:var(--color-ink);color:var(--color-paper)}
+  .fv-choice input:focus-visible+span,.fv input:focus-visible,.fv select:focus-visible{outline:2px solid var(--color-accent);outline-offset:3px}
+  .fv-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+  .fv-controls label,.fv-field{display:grid;gap:4px;font-size:13px;font-weight:600;min-width:0}
+  .fv select,.fv input[type=text]{min-height:44px;width:100%;min-width:0;border:1px solid var(--color-rule);border-radius:2px;background:var(--color-paper);padding:7px;font:inherit;color:var(--color-ink)}
+  .fv-distance{display:grid;grid-template-columns:minmax(0,1fr) 72px;gap:5px}.fv-far{display:flex;gap:7px;align-items:center;min-height:44px;font-size:13px}.fv-far input{accent-color:var(--color-accent)}
+  .fv-output{border-top:1px solid var(--color-rule);padding:18px 0 12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .fv-value{font:500 clamp(38px,8vw,58px)/1.05 var(--serif);letter-spacing:-.04em;margin:5px 0}
+  .fv-value small{font-size:19px;margin-left:4px}.fv-size{font:500 clamp(20px,4vw,30px)/1.3 var(--serif);margin:8px 0;overflow-wrap:anywhere}
+  .fv-muted{font-size:12px;color:var(--color-muted);line-height:1.6;overflow-wrap:anywhere}.fv-focus{font-size:13px;color:#365b43;line-height:1.5}.fv-focus[data-valid=false],.fv-error{color:#9d3528;font-weight:650}.fv-error{padding:10px 0}
+  .fv-axes{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;border-top:1px solid var(--color-rule);padding-top:10px;font-size:13px}.fv-axes b{font-variant-numeric:tabular-nums}
+  .fv-diagram{margin:15px 0 12px}.fv-diagram svg{display:block;width:100%;height:auto;border:1px solid var(--color-rule)}.fv-legend{display:flex;flex-wrap:wrap;gap:8px 12px;margin-top:9px;font-size:12px;color:var(--color-muted)}.fv-legend>span{display:flex;align-items:center;gap:5px}.fv-key{display:inline-block;width:17px;border-top:2px solid}.fv-base{border-color:#514d43;border-top-style:dashed}.fv-match{border-color:#205b67;border-top-style:dashed}.fv-target{border-color:var(--color-accent)}
+  .fv-static h3{margin:20px 0 10px;font-size:21px}.fv-table-wrap{overflow-wrap:anywhere;min-width:0}.fv-table-wrap :global(th:first-child){width:23%}.fv-table-wrap :global(td),.fv-table-wrap :global(th){font-size:13px;padding:8px 5px}
+  @media(max-width:420px){.fv-controls{grid-template-columns:minmax(0,1fr)}.fv-output{grid-template-columns:minmax(0,1fr)}}
+</style>

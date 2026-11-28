@@ -1,0 +1,50 @@
+---
+title: "宝丽来构图模拟器：用手机先看成片"
+description: "先选 Flip、I-2 或 SX-70，再用 iPhone 或 α6700 模拟构图与检查对焦距离。"
+number: 10
+category: "拍摄"
+minutes: 6
+---
+import FramingViewfinder from '../../components/FramingViewfinder.astro';
+
+## 01 先构图，再换相机
+
+手机相机切换到 **1:1 方形**。选择下方宝丽来机型，把手机或 Sony 镜头调到推荐值，站在同一位置、尽量保持镜头中心和朝向一致，再换成宝丽来拍摄。小数倍率是起点，不是精确校准结果。Sony 的数值是镜头实际毫米数，不是变焦倍数。
+
+<FramingViewfinder />
+
+## 02 为什么不是直接除以 24 mm？
+
+宝丽来相纸的有效成像部分宽 77 mm、高 79 mm，不能把带白边的整个相纸当成传感器。手机 4:3 与 Sony 3:2 的长宽比也不同。方形裁切会缩小视野；不可能用一个倍率同时让矩形的四边与近方形相纸完全重合。
+
+计算使用固定视角几何：水平宽度 = 2 × 距离 × tan(水平视角 / 2)，高度同理。Flip、I-2 优先采用官方公布的水平/垂直视角；SX-70 用 116 mm 和有效图像尺寸计算远距离视角。全画幅对角等效以 36 × 24 mm 的对角为基准，并非直接用于方形模式的手机倍率。
+
+对 iPhone 假设 24 mm 的对角等效基准，4:3 虚拟画幅短边约 25.96 mm；Sony 使用官方 APS-C 23.3 × 15.5 mm。每个方向的匹配焦距为该方向有效尺寸 / (2 × tan(视角 / 2))。手机再除以 24 mm 得到倍率。方形推荐取两方向焦距的几何平均；矩形推荐取较小焦距以保留目标四边，画面周围会多出内容。1× 约 24 mm、2× 约 48 mm 的主摄中间倍率是本工具的用途，并不假定手机所有其他镜头标签严格线性。手机和 Sony 实际裁切、镜头畸变、自动镜头切换以及近距离焦距变化都需要真机核对。
+
+## 03 对焦距离不是变焦倍数
+
+Flip 的四个焦区用于自动选择合适的成像系统，不是四档构图变焦；本站在区间边界把距离归入后一档，只是软件约定，实际固件边界行为未经测量。I-2 连续自动对焦，最低 40 cm。经典折叠 SX-70 以 Sonar OneStep SX-70 手册中的 10.4 英寸（约 26.4 cm）和 116 mm 为基准；不包含 Model 3、非折叠机型或改镜头机型。不同历史文献对焦距有约 1 mm 差异，不能保证每一台维修过的相机一致。
+
+Flip 的光学取景器与拍摄镜头不在同一位置，官方说明距离小于 1.2 m 时稍向左上调整；I-2 小于 8 m 时参考近摄取景框并锁定对焦。SX-70 的折叠 SLR 通过拍摄镜头取景，但近摄视角仍会变化。**在标称范围内不保证一定清晰**：快门、光线、实际对焦点和抖动也会影响成片。
+
+实际拍摄请参考[Flip：提高出片率](/learn/flip-shooting/)和[人像用光](/learn/portrait-light/)。
+
+## 04 怎样测出自己的相机有多准？
+
+本站尚未进行这组三机真机对照，图中是原创建模示意，不是真实相纸照片。
+
+固定相机位置、镜头中心和朝向，用有刻度的平面网格作为主体。记录机型、镜头、距离与参考平面（例如从前镜边缘测量）、数码画幅、倍率/EXIF、取景器边界和实际显影照片边界。每个机型先试 1、2、3 m，再试最近对焦附近；Flip 额外试 0.65、0.85、1.20、2.50 m。不要在小于最近对焦距离时浪费相纸。
+
+从实际照片读取宽、高，与理论范围逐轴比较。固定距离且同一参考平面时，可将理论水平倍率乘以（宝丽来理论宽度 / 宝丽来实测宽度），垂直方向同理。远距离可把误差不超过 5% 作为建议目标，近摄需单独标定。记录误差和重复次数，不把一个成功样本推广为全部相机。
+
+## 05 参考资料
+
+- [Flip 官方说明书（第 3、7 页）](https://support.polaroid.com/hc/en-us/article_attachments/26051119261458)
+- [I-2 官方规格](https://www.polaroid.com/en_us/products/i2-polaroid-camera)与[中文手册（第 6–7、10–13 页）](https://support.polaroid.com/hc/en-us/article_attachments/13261628947090)
+- [SX-70 Sonar OneStep 官方手册（第 6 页）](https://support.polaroid.com/hc/en-us/article_attachments/360003014647/Polaroid_SX-70_Sonar_-_User_Manual.pdf)
+- [Polaroid 相纸规格](https://www.polaroid.com/en_us/products/polaroid-i2-starter-set)
+- [iPhone 18 Pro Max 官方规格](https://support.apple.com/en-asia/148591)与[相机画幅控制](https://support.apple.com/guide/iphone/use-camera-tools-iph3dc593597/ios)
+- [Sony α6700 官方规格](https://www.sony.com/electronics/support/e-mount-body/ilce-6700/specifications)
+- [Cadrage 取景器格式与技术规格](https://www.cadrage.app/tech-specs/)（设计借鉴，不表示该应用已提供本工具的宝丽来预设）
+
+规格核对：2026-11-28。网站工具只进行本地几何运算，不调用摄像头、不上传照片。
